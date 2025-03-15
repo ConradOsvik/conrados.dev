@@ -8,6 +8,22 @@ export const env = createEnv({
      */
     server: {
         DATABASE_URL: z.string().url(),
+        TURSO_DATABASE_URL: z
+            .string()
+            .url()
+            .optional()
+            .refine(
+                (url) => (process.env.NODE_ENV === 'production' ? !!url : true),
+                'TURSO_DATABASE_URL is required in production'
+            ),
+        TURSO_DATABASE_TOKEN: z
+            .string()
+            .optional()
+            .refine(
+                (token) =>
+                    process.env.NODE_ENV === 'production' ? !!token : true,
+                'TURSO_DATABASE_TOKEN is required in production'
+            ),
         NODE_ENV: z
             .enum(['development', 'test', 'production'])
             .default('development')
@@ -28,6 +44,8 @@ export const env = createEnv({
      */
     runtimeEnv: {
         DATABASE_URL: process.env.DATABASE_URL,
+        TURSO_DATABASE_URL: process.env.TURSO_DATABASE_URL,
+        TURSO_DATABASE_TOKEN: process.env.DATABASE_TOKEN,
         NODE_ENV: process.env.NODE_ENV
         // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
     },
