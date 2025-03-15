@@ -7,23 +7,8 @@ export const env = createEnv({
      * isn't built with invalid env vars.
      */
     server: {
-        DATABASE_URL: z.string().url(),
-        TURSO_DATABASE_URL: z
-            .string()
-            .url()
-            .optional()
-            .refine(
-                (url) => (process.env.NODE_ENV === 'production' ? !!url : true),
-                'TURSO_DATABASE_URL is required in production'
-            ),
-        TURSO_DATABASE_TOKEN: z
-            .string()
-            .optional()
-            .refine(
-                (token) =>
-                    process.env.NODE_ENV === 'production' ? !!token : true,
-                'TURSO_DATABASE_TOKEN is required in production'
-            ),
+        TURSO_DATABASE_URL: z.string().url(),
+        TURSO_DATABASE_TOKEN: z.string(),
         NODE_ENV: z
             .enum(['development', 'test', 'production'])
             .default('development')
@@ -43,9 +28,8 @@ export const env = createEnv({
      * middlewares) or client-side so we need to destruct manually.
      */
     runtimeEnv: {
-        DATABASE_URL: process.env.DATABASE_URL,
         TURSO_DATABASE_URL: process.env.TURSO_DATABASE_URL,
-        TURSO_DATABASE_TOKEN: process.env.DATABASE_TOKEN,
+        TURSO_DATABASE_TOKEN: process.env.TURSO_DATABASE_TOKEN,
         NODE_ENV: process.env.NODE_ENV
         // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
     },
