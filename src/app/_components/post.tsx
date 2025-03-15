@@ -1,20 +1,27 @@
 "use client";
 
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 
-import { api } from "~/trpc/react";
+import { useTRPC } from "~/trpc/client";
 
 export function LatestPost() {
-  const [latestPost] = api.post.getLatest.useSuspenseQuery();
+  const api = useTRPC();
+  const { data: latestPost } = useQuery(api.post.getLatest.queryOptions());
 
-  const utils = api.useUtils();
+  const queryClient = useQueryClient();
   const [name, setName] = useState("");
-  const createPost = api.post.create.useMutation({
-    onSuccess: async () => {
-      await utils.post.invalidate();
-      setName("");
-    },
-  });
+
+  const createPost = useMutation(
+    api.post.create.mutationOptions({
+      onSuccess: async () => {
+        await queryClient.invalidateQueries({
+          queryKey: [api.post.getLatest.queryKey()],
+        });
+        setName("");
+      },
+    }),
+  );
 
   return (
     <div className="w-full max-w-xs">

@@ -1,12 +1,12 @@
 import Link from "next/link";
 
 import { LatestPost } from "~/app/_components/post";
-import { api, HydrateClient } from "~/trpc/server";
+import { api, caller, HydrateClient, prefetch } from "~/trpc/server";
 
 export default async function Home() {
-  const hello = await api.post.hello({ text: "from tRPC" });
+  const hello = await caller.post.hello({ text: "world" });
 
-  void api.post.getLatest.prefetch();
+  prefetch(api.post.getLatest.queryOptions());
 
   return (
     <HydrateClient>
