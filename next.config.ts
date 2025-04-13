@@ -1,8 +1,6 @@
-import { type NextConfig } from 'next'
-import { type Options } from 'rehype-pretty-code'
 import createMDX from '@next/mdx'
-import remarkFrontmatter from 'remark-frontmatter'
-import remarkMdxFrontmatter from 'remark-mdx-frontmatter'
+import type { NextConfig } from 'next'
+import type { Options } from 'rehype-pretty-code'
 import rehypePrettyCode from 'rehype-pretty-code'
 import './src/env.js'
 
@@ -18,7 +16,7 @@ const prettyCodeConfig: Options = {
 const withMDX = createMDX({
     extension: /\.(md|mdx)$/,
     options: {
-        remarkPlugins: [remarkFrontmatter, [remarkMdxFrontmatter]],
+        remarkPlugins: [],
         rehypePlugins: [[rehypePrettyCode, prettyCodeConfig]]
     }
 })

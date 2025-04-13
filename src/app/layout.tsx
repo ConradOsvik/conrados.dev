@@ -2,7 +2,7 @@ import '~/styles/globals.css'
 import '~/styles/mdx.css'
 
 import { GeistSans } from 'geist/font/sans'
-import { type Metadata } from 'next'
+import type { Metadata } from 'next'
 
 import { TRPCReactProvider } from '~/trpc/client'
 
@@ -17,7 +17,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
     return (
         <html lang="en" className={`${GeistSans.variable}`}>
-            <body>
+            <body className="flex w-full flex-col items-center justify-start">
                 <TRPCReactProvider>{children}</TRPCReactProvider>
             </body>
         </html>
