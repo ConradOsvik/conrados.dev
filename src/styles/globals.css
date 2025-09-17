@@ -82,9 +82,9 @@
 .dark {
     --background: oklch(0.145 0 0);
     --foreground: oklch(0.985 0 0);
-    --card: oklch(0.205 0 0);
+    --card: oklch(0.145 0 0);
     --card-foreground: oklch(0.985 0 0);
-    --popover: oklch(0.205 0 0);
+    --popover: oklch(0.145 0 0);
     --popover-foreground: oklch(0.985 0 0);
     --primary: oklch(0.922 0 0);
     --primary-foreground: oklch(0.205 0 0);
@@ -126,4 +126,16 @@
     .title {
         @apply font-doto text-5xl font-bold;
     }
+    .section-title {
+        @apply font-doto text-2xl font-semibold tracking-tight;
+    }
+    .chip {
+        @apply inline-flex items-center rounded-md border px-2 py-1 text-xs font-medium text-gray-600 transition-colors hover:bg-neutral-50 dark:text-gray-300 dark:hover:bg-neutral-900;
+    }
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+    animation: none;
+    mix-blend-mode: normal;
 }
