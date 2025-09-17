@@ -6,7 +6,7 @@ import { useI18n } from '~/locales/client'
 export default function Contact() {
     const t = useI18n()
     const email = 'conrad.tinius.osvik@gmail.com'
-    const socials = [{ name: 'GitHub', href: 'https://github.com/example' }]
+    const socials = [{ name: 'GitHub', href: 'https://github.com/ConradOsvik' }]
 
     return (
         <section id="contact" className="flex flex-col">
