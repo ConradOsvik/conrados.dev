@@ -9,7 +9,7 @@ export default function Footer() {
 
     return (
         <footer className="w-full py-8">
-            <div className="mx-auto w-full max-w-xl text-sm text-gray-500 dark:text-gray-400">
+            <div className="text-muted-foreground mx-auto w-full max-w-xl text-sm">
                 <div className="flex items-center justify-between">
                     <p>{t('footer.copyright', { year })}</p>
                     <div className="flex items-center gap-4">
