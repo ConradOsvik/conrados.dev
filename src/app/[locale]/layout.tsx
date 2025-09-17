@@ -1,10 +1,11 @@
 import type { Metadata } from 'next'
-import { Geist, Geist_Mono, Doto } from 'next/font/google'
+import { Geist, Geist_Mono, Doto, Bricolage_Grotesque } from 'next/font/google'
 import '~/styles/globals.css'
 import Providers from './providers'
 import { setStaticParamsLocale } from 'next-international/server'
 import { getStaticParams } from '~/locales/server'
 import Header from '~/components/layout/header'
+import Footer from '~/components/layout/footer'
 
 const geistSans = Geist({
     variable: '--font-geist-sans',
@@ -18,6 +19,11 @@ const geistMono = Geist_Mono({
 
 const doto = Doto({
     variable: '--font-doto',
+    subsets: ['latin']
+})
+
+const bricolageGrotesque = Bricolage_Grotesque({
+    variable: '--font-bricolage-grotesque',
     subsets: ['latin']
 })
 
@@ -43,11 +49,12 @@ export default async function RootLayout({
     return (
         <html lang="en" suppressHydrationWarning>
             <body
-                className={`${geistSans.variable} ${geistMono.variable} ${doto.variable} flex min-h-screen flex-col items-center justify-start font-mono antialiased`}
+                className={`${geistSans.variable} ${geistMono.variable} ${doto.variable} ${bricolageGrotesque.variable} flex min-h-screen flex-col items-center justify-start font-sans antialiased`}
             >
                 <Providers locale={locale}>
                     <Header />
                     <div className="mt-4 w-full max-w-xl">{children}</div>
+                    <Footer />
                 </Providers>
             </body>
         </html>
