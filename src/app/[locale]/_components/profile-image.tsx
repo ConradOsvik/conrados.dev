@@ -1,15 +1,23 @@
 'use client'
 
 import Image from 'next/image'
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 
 export default function ProfileImage() {
     const imageRef = useRef<HTMLDivElement>(null)
     const [transform, setTransform] = useState('')
     const [glareStyle, setGlareStyle] = useState({})
+    const [isTouchDevice, setIsTouchDevice] = useState(false)
+
+    useEffect(() => {
+        // Detect if device supports touch
+        setIsTouchDevice(
+            'ontouchstart' in window || navigator.maxTouchPoints > 0
+        )
+    }, [])
 
     const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-        if (!imageRef.current) return
+        if (!imageRef.current || isTouchDevice) return
 
         const rect = imageRef.current.getBoundingClientRect()
         const x = e.clientX - rect.left
@@ -45,7 +53,7 @@ export default function ProfileImage() {
     return (
         <div
             ref={imageRef}
-            className="relative overflow-hidden rounded-md transition-transform duration-200 ease-out"
+            className="relative w-full overflow-hidden rounded-md transition-transform duration-200 ease-out"
             style={{ transform }}
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
@@ -55,8 +63,7 @@ export default function ProfileImage() {
                 alt="Conrad Osvik"
                 width={150}
                 height={200}
-                className="h-full w-auto object-cover shadow-lg"
-                style={{ width: 'auto' }}
+                className="h-auto w-full object-cover shadow-lg"
                 priority
             />
             {/* Glare overlay */}
