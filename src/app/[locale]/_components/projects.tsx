@@ -24,6 +24,7 @@ import {
     TRPC,
     Django
 } from './devicons'
+import SectionTitle from './section-title'
 
 type Project = {
     title: string
@@ -82,7 +83,7 @@ export default function Projects() {
 
     return (
         <section id="projects" className="flex flex-col">
-            <h2 className="section-title">{t('sections.projects')}</h2>
+            <SectionTitle id="projects">{t('sections.projects')}</SectionTitle>
             <div className="mt-4 space-y-4">
                 {projects.map((project) => (
                     <Card key={project.title}>

@@ -9,6 +9,7 @@ import {
     CardDescription,
     CardAction
 } from '~/components/ui/card'
+import SectionTitle from './section-title'
 
 export default function Experience() {
     const t = useI18n()
@@ -30,7 +31,9 @@ export default function Experience() {
 
     return (
         <section id="experience" className="flex flex-col">
-            <h2 className="section-title">{t('sections.experience')}</h2>
+            <SectionTitle id="experience">
+                {t('sections.experience')}
+            </SectionTitle>
             <div className="mt-4 space-y-4">
                 {roles.map((r) => (
                     <Card key={r.role}>

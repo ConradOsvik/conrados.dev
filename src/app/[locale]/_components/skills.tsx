@@ -30,6 +30,7 @@ import {
     Docker,
     Tailwind
 } from './devicons'
+import SectionTitle from './section-title'
 
 type Skill = {
     label: string
@@ -81,7 +82,7 @@ export default function Skills() {
 
     return (
         <section id="skills" className="flex flex-col">
-            <h2 className="section-title">{t('sections.skills')}</h2>
+            <SectionTitle id="skills">{t('sections.skills')}</SectionTitle>
             <div className="mt-4 space-y-4">
                 {Object.entries(skills).map(([group, items]) => (
                     <div key={group}>

@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { useI18n } from '~/locales/client'
+import SectionTitle from './section-title'
 
 export default function Contact() {
     const t = useI18n()
@@ -10,7 +11,7 @@ export default function Contact() {
 
     return (
         <section id="contact" className="flex flex-col">
-            <h2 className="section-title">{t('sections.contact')}</h2>
+            <SectionTitle id="contact">{t('sections.contact')}</SectionTitle>
             <p className="text-muted-foreground mt-3">
                 {t('contact.description')}
             </p>

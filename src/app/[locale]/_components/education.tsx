@@ -9,6 +9,7 @@ import {
     CardDescription,
     CardAction
 } from '~/components/ui/card'
+import SectionTitle from './section-title'
 
 export default function Education() {
     const t = useI18n()
@@ -24,7 +25,9 @@ export default function Education() {
 
     return (
         <section id="education" className="flex flex-col">
-            <h2 className="section-title">{t('sections.education')}</h2>
+            <SectionTitle id="education">
+                {t('sections.education')}
+            </SectionTitle>
             <div className="mt-4 space-y-4">
                 {schools.map((s) => (
                     <Card key={s.degree}>
@@ -39,7 +42,7 @@ export default function Education() {
                                     </CardDescription>
                                 </div>
                                 <CardAction>
-                                    <div className="text-muted-foreground text-xs">
+                                    <div className="text-muted-foreground text-xs whitespace-nowrap">
                                         {s.period}
                                     </div>
                                 </CardAction>
