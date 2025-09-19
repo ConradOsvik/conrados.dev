@@ -39,7 +39,7 @@ export default {
         'NTNU - Norges teknisk-naturvitenskapelige universitet',
     'education.ntnu.period': '2023 - 2026',
     'education.ntnu.details':
-        'Fokus på programvareutvikling, algoritmer og menneske-maskin-interaksjon.',
+        'Fokus på programvareutvikling, algoritmer og maskinlæring.',
 
     // Projects
     'projects.photon.title': 'Photon',

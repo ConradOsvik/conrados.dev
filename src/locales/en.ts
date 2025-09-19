@@ -40,7 +40,7 @@ export default {
         'NTNU - Norwegian University of Science and Technology',
     'education.ntnu.period': '2023 - 2026',
     'education.ntnu.details':
-        'Focus on software engineering, algorithms, and human‑computer interaction.',
+        'Focus on software engineering, algorithms, and machine learning.',
 
     // Projects
     'projects.photon.title': 'Photon',
