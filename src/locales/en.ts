@@ -24,7 +24,7 @@ export default {
     'experience.tihlde.role': 'Software Developer',
     'experience.tihlde.org': 'TIHLDE',
     'experience.tihlde.location': 'Trondheim',
-    'experience.tihlde.period': 'September 2023 — Present',
+    'experience.tihlde.period': 'September 2023 - Present',
     'experience.tihlde.highlight1':
         'Working as a fullstack developer for my student organization',
     'experience.tihlde.highlight2':
@@ -37,8 +37,8 @@ export default {
     // Education
     'education.ntnu.degree': 'B.Sc. in Computer Science',
     'education.ntnu.school':
-        'NTNU — Norwegian University of Science and Technology',
-    'education.ntnu.period': '2023 — 2026',
+        'NTNU - Norwegian University of Science and Technology',
+    'education.ntnu.period': '2023 - 2026',
     'education.ntnu.details':
         'Focus on software engineering, algorithms, and human‑computer interaction.',
 

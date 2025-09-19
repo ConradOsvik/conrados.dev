@@ -24,7 +24,7 @@ export default {
     'experience.tihlde.role': 'Utvikler',
     'experience.tihlde.org': 'TIHLDE',
     'experience.tihlde.location': 'Trondheim',
-    'experience.tihlde.period': 'September 2023 — nåværende',
+    'experience.tihlde.period': 'September 2023 - nåværende',
     'experience.tihlde.highlight1':
         'Jobber som fullstack-utvikler for min linjeforening',
     'experience.tihlde.highlight2':
@@ -36,8 +36,8 @@ export default {
     // Education
     'education.ntnu.degree': 'Bachelor i datateknologi',
     'education.ntnu.school':
-        'NTNU — Norges teknisk-naturvitenskapelige universitet',
-    'education.ntnu.period': '2023 — 2026',
+        'NTNU - Norges teknisk-naturvitenskapelige universitet',
+    'education.ntnu.period': '2023 - 2026',
     'education.ntnu.details':
         'Fokus på programvareutvikling, algoritmer og menneske-maskin-interaksjon.',
 
