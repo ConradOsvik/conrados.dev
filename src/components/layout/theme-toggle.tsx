@@ -66,7 +66,7 @@ export const ThemeToggle = ({ className }: props) => {
             ref={buttonRef}
             onClick={changeTheme}
             aria-label="Toggle theme"
-            className={cn(className, 'm-2 size-10')}
+            className={cn(className, 'size-10')}
             variant="ghost"
             size="icon"
         >

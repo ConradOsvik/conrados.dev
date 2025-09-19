@@ -17,7 +17,7 @@ export const LanguageToggle = () => {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className="my-2 size-10">
+                <Button variant="ghost" size="icon" className="size-10">
                     <LanguageIcon className="size-6" />
                 </Button>
             </DropdownMenuTrigger>
