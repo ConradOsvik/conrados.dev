@@ -5,29 +5,56 @@ import { useI18n } from '~/locales/client'
 import { LanguageToggle } from './language-toggle'
 import { ThemeToggle } from './theme-toggle'
 import Logo from '../ui/logo'
+import { usePathname } from 'next/navigation'
+import { cn } from '~/lib/utils'
 
 export default function Header() {
     const t = useI18n()
 
     return (
-        <header className="w-full">
-            <div className="mx-auto flex w-full max-w-xl items-center justify-between">
-                <div className="flex items-center gap-4">
-                    <Link href={{ pathname: '/' }}>
+        <header className="bg-background/95 supports-[backdrop-filter]:bg-background/60 border-border fixed top-0 z-50 w-full border-b backdrop-blur">
+            <div className="mx-auto flex w-full max-w-xl items-center justify-between px-6 py-4 md:px-0">
+                <div className="flex items-center gap-3 sm:gap-4">
+                    <Link
+                        href={{ pathname: '/' }}
+                        className="flex items-center"
+                    >
                         <Logo
                             size={32}
-                            className="transition-colors duration-200"
+                            className="transition-colors duration-200 hover:opacity-80"
                         />
                     </Link>
-                    <nav className="flex items-center gap-6">
-                        <Link href={{ pathname: '/' }}>{t('nav.home')}</Link>
+                    <nav className="hidden items-center gap-6 sm:flex">
+                        <NavLink href="/">{t('nav.home')}</NavLink>
                     </nav>
                 </div>
-                <div className="flex items-center">
+                <div className="flex items-center gap-1 sm:gap-2">
                     <LanguageToggle />
                     <ThemeToggle />
                 </div>
             </div>
         </header>
+    )
+}
+
+function NavLink({
+    href,
+    children
+}: {
+    href: string
+    children: React.ReactNode
+}) {
+    const pathname = usePathname()
+
+    return (
+        <Link
+            href={{ pathname: href }}
+            className={cn(
+                pathname === href ? 'text-foreground' : 'text-muted-foreground',
+                'hover:text-foreground text-sm font-medium transition-colors'
+            )}
+        >
+            {children}
+        </Link>
     )
 }

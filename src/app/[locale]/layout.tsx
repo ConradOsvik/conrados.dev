@@ -53,7 +53,9 @@ export default async function RootLayout({
             >
                 <Providers locale={locale}>
                     <Header />
-                    <div className="mt-4 w-full max-w-xl">{children}</div>
+                    <main className="w-full max-w-xl flex-1 px-6 pt-18 md:px-0">
+                        {children}
+                    </main>
                     <Footer />
                 </Providers>
             </body>

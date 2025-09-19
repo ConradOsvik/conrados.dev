@@ -8,15 +8,23 @@ export default function Footer() {
     const year = new Date().getFullYear()
 
     return (
-        <footer className="w-full py-8">
-            <div className="text-muted-foreground mx-auto w-full max-w-xl text-sm">
-                <div className="flex items-center justify-between">
-                    <p>{t('footer.copyright', { year })}</p>
-                    <div className="flex items-center gap-4">
-                        <Link href="#projects" className="hover:underline">
+        <footer className="border-border w-full border-t py-6">
+            <div className="mx-auto w-full max-w-xl px-6 md:px-0">
+                <div className="text-muted-foreground flex flex-col gap-4 text-sm sm:flex-row sm:items-center sm:justify-between">
+                    <p className="text-center sm:text-left">
+                        {t('footer.copyright', { year })}
+                    </p>
+                    <div className="flex items-center justify-center gap-6 sm:justify-end">
+                        <Link
+                            href="#projects"
+                            className="hover:text-foreground transition-colors hover:underline"
+                        >
                             {t('nav.projects')}
                         </Link>
-                        <Link href="#contact" className="hover:underline">
+                        <Link
+                            href="#contact"
+                            className="hover:text-foreground transition-colors hover:underline"
+                        >
                             {t('nav.contact')}
                         </Link>
                     </div>

@@ -8,17 +8,28 @@ import { Separator } from '~/components/ui/separator'
 
 export default function Home() {
     return (
-        <div>
+        <div className="itemse-center flex flex-col justify-start gap-8 py-8">
+            {/* Hero Section */}
             <About />
-            <Separator className="my-8" />
+
+            {/* Skills Section */}
+            <Separator />
             <Skills />
-            <Separator className="my-8" />
+
+            {/* Projects Section */}
+            <Separator />
             <Projects />
-            <Separator className="my-8" />
+
+            {/* Experience Section */}
+            <Separator />
             <Experience />
-            <Separator className="my-8" />
+
+            {/* Education Section */}
+            <Separator />
             <Education />
-            <Separator className="my-8" />
+
+            {/* Contact Section */}
+            <Separator />
             <Contact />
         </div>
     )
