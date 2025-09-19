@@ -1,3 +1,4 @@
+// Updated about.tsx
 'use client'
 
 import { useI18n } from '~/locales/client'
@@ -9,16 +10,32 @@ export default function About() {
     return (
         <section
             id="hero"
-            className="flex flex-col items-start gap-6 md:flex-row md:items-start md:justify-between"
+            className="flex flex-col items-center gap-6 sm:flex-row sm:items-start sm:justify-between"
         >
-            <div className="flex-1">
+            {/* Mobile: Image at top, smaller and centered */}
+            <div className="order-first flex justify-center sm:hidden">
+                <div className="h-32 w-24">
+                    {' '}
+                    {/* Fixed small size for mobile */}
+                    <ProfileImage />
+                </div>
+            </div>
+
+            {/* Text content */}
+            <div className="flex-1 text-center sm:text-left">
                 <h1 className="title">Conrad Osvik</h1>
                 <p className="text-muted-foreground mt-3 max-w-prose text-base leading-relaxed text-balance">
                     {t('hero.intro')}
                 </p>
             </div>
-            <div className="flex shrink-0 self-stretch">
-                <ProfileImage />
+
+            {/* Desktop: Image on the right, controlled size */}
+            <div className="hidden sm:flex sm:shrink-0">
+                <div className="w-40">
+                    {' '}
+                    {/* Controlled width */}
+                    <ProfileImage />
+                </div>
             </div>
         </section>
     )
