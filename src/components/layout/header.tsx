@@ -7,6 +7,7 @@ import { ThemeToggle } from './theme-toggle'
 import Logo from '../ui/logo'
 import { usePathname } from 'next/navigation'
 import { cn } from '~/lib/utils'
+import { useEffect, useState } from 'react'
 
 export default function Header() {
     const t = useI18n()
@@ -46,12 +47,31 @@ function NavLink({
     children: React.ReactNode
 }) {
     const pathname = usePathname()
+    const [mounted, setMounted] = useState(false)
+
+    //TODO: Insane nextjs monkey patching
+    useEffect(() => {
+        setMounted(true)
+    }, [])
+
+    if (!mounted) {
+        return (
+            <Link
+                href={{ pathname: href }}
+                className="text-muted-foreground hover:text-foreground font-medium transition-colors"
+            >
+                {children}
+            </Link>
+        )
+    }
+
+    const isActive = pathname === href
 
     return (
         <Link
             href={{ pathname: href }}
             className={cn(
-                pathname === href ? 'text-foreground' : 'text-muted-foreground',
+                isActive ? 'text-foreground' : 'text-muted-foreground',
                 'hover:text-foreground font-medium transition-colors'
             )}
         >
