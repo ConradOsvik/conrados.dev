@@ -12,7 +12,7 @@ export default function Header() {
     const t = useI18n()
 
     return (
-        <header className="bg-background/95 supports-[backdrop-filter]:bg-background/60 border-border fixed top-0 z-50 w-full border-b backdrop-blur">
+        <header className="bg-background/95 dark:supports-[backdrop-filter]:bg-background/80 supports-[backdrop-filter]:bg-background/50 sticky top-0 z-50 w-full backdrop-blur">
             <div className="mx-auto flex w-full max-w-xl items-center justify-between px-6 py-4 md:px-0">
                 <div className="flex items-center gap-3 sm:gap-4">
                     <Link
@@ -26,6 +26,7 @@ export default function Header() {
                     </Link>
                     <nav className="hidden items-center gap-6 sm:flex">
                         <NavLink href="/">{t('nav.home')}</NavLink>
+                        <NavLink href="/blog">{t('nav.blog')}</NavLink>
                     </nav>
                 </div>
                 <div className="flex items-center gap-1 sm:gap-2">
@@ -51,7 +52,7 @@ function NavLink({
             href={{ pathname: href }}
             className={cn(
                 pathname === href ? 'text-foreground' : 'text-muted-foreground',
-                'hover:text-foreground text-sm font-medium transition-colors'
+                'hover:text-foreground font-medium transition-colors'
             )}
         >
             {children}

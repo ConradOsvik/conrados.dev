@@ -8,7 +8,7 @@ export default function Footer() {
     const year = new Date().getFullYear()
 
     return (
-        <footer className="border-border w-full border-t py-6">
+        <footer className="w-full py-6">
             <div className="mx-auto w-full max-w-xl px-6 md:px-0">
                 <div className="text-muted-foreground flex flex-col gap-4 text-sm sm:flex-row sm:items-center sm:justify-between">
                     <p className="text-center sm:text-left">
@@ -19,13 +19,13 @@ export default function Footer() {
                             href="#projects"
                             className="hover:text-foreground transition-colors hover:underline"
                         >
-                            {t('nav.projects')}
+                            {t('footer.projects')}
                         </Link>
                         <Link
                             href="#contact"
                             className="hover:text-foreground transition-colors hover:underline"
                         >
-                            {t('nav.contact')}
+                            {t('footer.contact')}
                         </Link>
                     </div>
                 </div>
