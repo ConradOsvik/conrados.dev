@@ -25,6 +25,8 @@ function NavLink({
 }) {
     const pathname = usePathname()
 
+    console.log('Pathname:', pathname, href)
+
     return (
         <Link
             href={{ pathname: href }}
