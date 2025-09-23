@@ -1,4 +1,4 @@
-import { forwardRef, type JSX } from 'react'
+import React, { type JSX } from 'react'
 import { cn } from '~/lib/utils'
 
 type Variant =
@@ -54,43 +54,56 @@ const variantToDefaultTag: Record<Variant, keyof JSX.IntrinsicElements> = {
     'label-sm': 'span'
 }
 
-export interface TypographyProps extends React.HTMLAttributes<HTMLElement> {
+export interface TypographyProps {
     variant: Variant
     asChild?: boolean
     as?: keyof JSX.IntrinsicElements
+    className?: string
+    children?: React.ReactNode
+    ref?: React.Ref<HTMLElement>
 }
 
-export const Typography = forwardRef<HTMLElement, TypographyProps>(
-    ({ variant, className, as, ...props }, ref) => {
-        const Tag = (as ?? variantToDefaultTag[variant]) as any
-        return (
-            <Tag
-                ref={ref as any}
-                className={cn(variantToClassName[variant], className)}
-                {...props}
-            />
-        )
-    }
-)
+export function Typography({
+    variant,
+    className,
+    as,
+    ref,
+    ...props
+}: TypographyProps) {
+    const tagName = as ?? variantToDefaultTag[variant]
+    const Component = tagName as keyof JSX.IntrinsicElements
 
-Typography.displayName = 'Typography'
+    return React.createElement(Component, {
+        ref,
+        className: cn(variantToClassName[variant], className),
+        ...props
+    })
+}
 
 export function withTypography(
     variant: Variant,
     tag?: keyof JSX.IntrinsicElements
 ) {
-    return forwardRef<HTMLElement, React.HTMLAttributes<HTMLElement>>(
-        ({ className, ...props }, ref) => {
-            const Tag = (tag ?? variantToDefaultTag[variant]) as any
-            return (
-                <Tag
-                    ref={ref as any}
-                    className={cn(variantToClassName[variant], className)}
-                    {...props}
-                />
-            )
-        }
-    )
+    const Component = ({
+        className,
+        ref,
+        ...props
+    }: React.HTMLAttributes<HTMLElement> & {
+        ref?: React.Ref<HTMLElement>
+    }) => {
+        const tagName = tag ?? variantToDefaultTag[variant]
+        const Element = tagName as keyof JSX.IntrinsicElements
+
+        return React.createElement(Element, {
+            ref,
+            className: cn(variantToClassName[variant], className),
+            ...props
+        })
+    }
+
+    Component.displayName = `WithTypography(${variant}${tag ? ` as ${tag}` : ''})`
+
+    return Component
 }
 
 export type { Variant as TypographyVariant }

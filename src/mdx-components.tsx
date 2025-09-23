@@ -209,7 +209,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
 type HeadingTag = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
 
 function createHeading(Tag: HeadingTag, baseClasses: string) {
-    return ({
+    const Component = ({
         id,
         className,
         children,
@@ -227,4 +227,8 @@ function createHeading(Tag: HeadingTag, baseClasses: string) {
             </Tag>
         )
     }
+
+    Component.displayName = `Heading(${Tag})`
+
+    return Component
 }
