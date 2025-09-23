@@ -1,11 +1,13 @@
+import 'katex/dist/katex.min.css'
+import '~/styles/globals.css'
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono, Doto, Bricolage_Grotesque } from 'next/font/google'
-import '~/styles/globals.css'
 import Providers from './providers'
 import { setStaticParamsLocale } from 'next-international/server'
 import { getStaticParams } from '~/locales/server'
 import Header from '~/components/layout/header'
 import Footer from '~/components/layout/footer'
+import MobileNav from '~/components/layout/mobile-nav'
 
 const geistSans = Geist({
     variable: '--font-geist-sans',
@@ -53,9 +55,10 @@ export default async function RootLayout({
             >
                 <Providers locale={locale}>
                     <Header />
-                    <main className="w-full max-w-xl flex-1 px-6 pt-18 md:px-0">
+                    <main className="flex w-full flex-1 justify-center px-6">
                         {children}
                     </main>
+                    <MobileNav />
                     <Footer />
                 </Providers>
             </body>
