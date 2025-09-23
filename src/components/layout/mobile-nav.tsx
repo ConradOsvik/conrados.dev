@@ -26,6 +26,8 @@ function NavLink({
     const pathname = usePathname()
 
     console.log('Pathname:', pathname, href)
+    const isActive = pathname === href
+    console.log('Is Active:', isActive)
 
     return (
         <Link
