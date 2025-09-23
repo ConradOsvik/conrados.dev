@@ -1,5 +1,10 @@
 import { PostHeader } from '~/app/[locale]/blog/[...slug]/_components/post-header'
-import { getPostBySlug } from '~/lib/posts'
+import { getAllPosts, getPostBySlug } from '~/lib/posts'
+
+export const generateStaticParams = async () => {
+    const posts = await getAllPosts()
+    return posts.map((post) => post.slug)
+}
 
 export async function generateMetadata({
     params
