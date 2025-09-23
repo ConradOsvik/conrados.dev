@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { useEffect, useState } from 'react'
 import { cn } from '~/lib/utils'
 import { useI18n } from '~/locales/client'
 
@@ -24,20 +25,25 @@ function NavLink({
     children: React.ReactNode
 }) {
     const pathname = usePathname()
+    const [mounted, setMounted] = useState(false)
 
-    console.log('Pathname:', pathname, href)
-    const isActive = pathname === href
-    console.log('Is Active:', isActive)
+    //TODO: Insane nextjs monkey patching
+    useEffect(() => {
+        setMounted(true)
+    }, [])
 
-    console.log(
-        'Classnames:',
-        cn(
-            isActive
-                ? 'bg-foreground/10'
-                : 'bg-foreground/0 text-muted-foreground',
-            'hover:text-foreground rounded-full px-4 py-2 font-medium transition-colors'
+    if (!mounted) {
+        return (
+            <Link
+                href={{ pathname: href }}
+                className="bg-foreground/0 text-muted-foreground hover:text-foreground rounded-full px-4 py-2 font-medium transition-colors"
+            >
+                {children}
+            </Link>
         )
-    )
+    }
+
+    const isActive = pathname === href
 
     return (
         <Link
