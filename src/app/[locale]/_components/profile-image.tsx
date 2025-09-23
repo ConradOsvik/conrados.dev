@@ -53,7 +53,7 @@ export default function ProfileImage() {
     return (
         <div
             ref={imageRef}
-            className="relative w-full overflow-hidden rounded-md transition-transform duration-200 ease-out"
+            className="relative w-full overflow-hidden rounded-md transition-transform duration-200 ease-out hover:scale-105"
             style={{ transform }}
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
