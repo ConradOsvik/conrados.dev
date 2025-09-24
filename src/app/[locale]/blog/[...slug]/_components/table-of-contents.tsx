@@ -40,11 +40,17 @@ function useActiveItem(itemIds: string[]) {
 }
 
 export function TableOfContents({ toc }: { toc: Toc }) {
-    const elementIds = useMemo(() => {
-        return toc
-            .map((item) => item.id)
-            .filter((id): id is string => id !== undefined)
-    }, [toc])
+    const flattenIds = (items: Toc): string[] => {
+        const ids: string[] = []
+        for (const item of items ?? []) {
+            if (item.id) ids.push(item.id)
+            if (item.children?.length)
+                ids.push(...flattenIds(item.children as Toc))
+        }
+        return ids
+    }
+
+    const elementIds = useMemo(() => flattenIds(toc), [toc])
 
     const activeHeading = useActiveItem(elementIds)
 
@@ -53,11 +59,10 @@ export function TableOfContents({ toc }: { toc: Toc }) {
         return Math.min(...toc.map((item) => item.depth))
     }, [toc])
 
-    return (
-        <nav className="sticky top-20 p-8">
-            <h2 className="typo-title-lg pb-2">In this post</h2>
-            <ul>
-                {toc.map((item) => (
+    const renderItems = (items: Toc) => {
+        return (
+            <ul className="space-y-1">
+                {items.map((item) => (
                     <li key={item.id}>
                         <a
                             href={`#${item.id}`}
@@ -69,14 +74,24 @@ export function TableOfContents({ toc }: { toc: Toc }) {
                             )}
                             data-depth={item.depth}
                             style={{
-                                paddingLeft: `${(item.depth - baseDepth) * 0.5}em`
+                                paddingLeft: `${(item.depth - baseDepth) * 1}em`
                             }}
                         >
                             {item.value}
                         </a>
+                        {item.children?.length
+                            ? renderItems(item.children as Toc)
+                            : null}
                     </li>
                 ))}
             </ul>
+        )
+    }
+
+    return (
+        <nav className="sticky top-20 p-8">
+            <h2 className="typo-title-lg pb-2">In this post</h2>
+            {renderItems(toc)}
         </nav>
     )
 }
