@@ -129,11 +129,75 @@
 }
 
 @layer components {
+    /*
+     * Unified typography scale
+     * Usage examples:
+     *  - <h1 class="typo-display-lg">...</h1>
+     *  - <h2 class="typo-headline-md">...</h2>
+     *  - <p class="typo-body-md">...</p>
+     *  - <span class="typo-label-sm">...</span>
+     */
+    /* Display (hero-level titles) */
+    .typo-display-lg {
+        @apply text-foreground font-doto text-6xl font-bold tracking-tight lg:text-7xl;
+    }
+    .typo-display-md {
+        @apply text-foreground font-doto text-5xl font-bold tracking-tight lg:text-6xl;
+    }
+    .typo-display-sm {
+        @apply text-foreground font-doto text-4xl font-bold tracking-tight lg:text-5xl;
+    }
+
+    /* Headline (page/section headings) */
+    .typo-headline-lg {
+        @apply text-foreground font-doto text-4xl font-semibold tracking-tight lg:text-5xl;
+    }
+    .typo-headline-md {
+        @apply text-foreground font-doto text-3xl font-semibold tracking-tight lg:text-4xl;
+    }
+    .typo-headline-sm {
+        @apply text-foreground font-doto text-2xl font-semibold tracking-tight lg:text-3xl;
+    }
+
+    /* Title (smaller headings used across UI) */
+    .typo-title-lg {
+        @apply text-foreground font-doto text-2xl font-semibold tracking-tight;
+    }
+    .typo-title-md {
+        @apply text-foreground font-doto text-xl font-semibold tracking-tight;
+    }
+    .typo-title-sm {
+        @apply text-foreground font-doto text-lg font-semibold tracking-tight;
+    }
+
+    /* Body (paragraph text) */
+    .typo-body-lg {
+        @apply text-muted-foreground text-lg leading-8;
+    }
+    .typo-body-md {
+        @apply text-muted-foreground text-base leading-7;
+    }
+    .typo-body-sm {
+        @apply text-muted-foreground text-sm leading-6;
+    }
+
+    /* Label (meta, captions, helper) */
+    .typo-label-lg {
+        @apply text-muted-foreground text-base font-medium;
+    }
+    .typo-label-md {
+        @apply text-muted-foreground text-sm font-medium;
+    }
+    .typo-label-sm {
+        @apply text-muted-foreground text-xs font-medium;
+    }
+
+    /* Backwards-compatible aliases (must @apply utilities, not custom classes) */
     .title {
-        @apply font-doto text-5xl font-bold;
+        @apply text-foreground font-doto text-5xl font-bold tracking-tight lg:text-6xl;
     }
     .section-title {
-        @apply font-doto text-2xl leading-none font-semibold tracking-tight;
+        @apply text-foreground font-doto text-2xl leading-none font-semibold tracking-tight;
     }
     .chip {
         @apply inline-flex items-center rounded-md border px-2 py-1 text-xs font-medium text-gray-600 transition-colors hover:bg-neutral-50 dark:text-gray-300 dark:hover:bg-neutral-900;

@@ -10,8 +10,7 @@ export default {
 
     // Navigation
     'nav.home': 'Hjem',
-    'nav.projects': 'Prosjekter',
-    'nav.contact': 'Kontakt',
+    'nav.blog': 'Blogg',
 
     // Section titles
     'sections.experience': 'Erfaring',
@@ -68,5 +67,7 @@ export default {
     'contact.description': 'Vil du samarbeide eller bare si hei? Ta kontakt:',
 
     // Footer
-    'footer.copyright': '© {year} Conrad Osvik'
+    'footer.copyright': '© {year} Conrad Osvik',
+    'footer.projects': 'Prosjekter',
+    'footer.contact': 'Kontakt'
 } as const

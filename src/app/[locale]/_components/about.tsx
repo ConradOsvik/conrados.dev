@@ -10,7 +10,7 @@ export default function About() {
     return (
         <section
             id="hero"
-            className="flex flex-col items-center gap-6 sm:flex-row sm:items-start sm:justify-between"
+            className="flex flex-col items-center gap-6 pt-4 sm:flex-row sm:items-start sm:justify-between"
         >
             {/* Mobile: Image at top, smaller and centered */}
             <div className="order-first flex justify-center sm:hidden">
@@ -23,15 +23,15 @@ export default function About() {
 
             {/* Text content */}
             <div className="flex-1 text-center sm:text-left">
-                <h1 className="title">Conrad Osvik</h1>
-                <p className="text-muted-foreground mt-3 max-w-prose text-base leading-relaxed text-balance">
+                <h1 className="typo-display-sm">Conrad Osvik</h1>
+                <p className="typo-body-md mt-3 max-w-prose text-balance">
                     {t('hero.intro')}
                 </p>
             </div>
 
             {/* Desktop: Image on the right, controlled size */}
             <div className="hidden sm:flex sm:shrink-0">
-                <div className="w-40">
+                <div className="w-44">
                     {' '}
                     {/* Controlled width */}
                     <ProfileImage />

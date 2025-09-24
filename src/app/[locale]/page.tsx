@@ -6,9 +6,9 @@ import Education from './_components/education'
 import Contact from './_components/contact'
 import { Separator } from '~/components/ui/separator'
 
-export default function Home() {
+export default function HomePage() {
     return (
-        <div className="itemse-center flex flex-col justify-start gap-8 py-8">
+        <div className="flex w-full max-w-xl flex-col gap-8">
             {/* Hero Section */}
             <About />
 
