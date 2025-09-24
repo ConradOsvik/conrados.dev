@@ -85,6 +85,68 @@ $$
 f(x) = ax^2 + bx + c
 $$
 
+## GitHub Flavored Markdown (GFM)
+
+### Task Lists
+
+- [x] Implement feature
+- [ ] Write tests
+    - [x] Unit tests
+    - [ ] Integration tests
+- [ ] Update docs
+
+### Strikethrough
+
+This text has ~~obsolete information~~ that was updated later.
+
+### Autolink Literals
+
+Bare links are automatically linked in GFM:
+
+https://example.com and www.github.com will both be clickable.
+
+### Footnotes
+
+Here is a statement with a footnote.[^note]
+
+[^note]: This is the footnote content. You can include links like https://github.com and even more text.
+
+### Aligned Table
+
+| Name    | Score | Trend |
+| :------ | ----: | :---: |
+| Alice   |   100 |  ⬆️   |
+| Bob     |    75 |  ⬇️   |
+| Charlie |    90 |   ⟷   |
+
+### Diff Code Block
+
+```diff
+diff --git a/app/page.tsx b/app/page.tsx
+index 1111111..2222222 100644
+--- a/app/page.tsx
++++ b/app/page.tsx
+@@
+- return <h1>Hello</h1>
++ return <h1>Hello, world!</h1>
+```
+
+### Details Disclosure
+
+<details>
+    <summary>Click to expand extra context</summary>
+    <div className="typo-body-md">
+        This section uses native HTML details/summary which renders well on
+        GitHub and most MDX renderers.
+        <ul>
+            <li>It can contain lists</li>
+            <li>
+                And <code>inline code</code>
+            </li>
+        </ul>
+    </div>
+</details>
+
 ## Conclusion
 
 This demonstrates all the styling features working together with the shadcn design system!
