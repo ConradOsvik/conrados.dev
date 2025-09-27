@@ -1,11 +1,21 @@
-import { I18nProviderClient } from '~/locales/client'
+import { NextIntlClientProvider } from 'next-intl'
+import { ThemeProvider } from 'next-themes'
 
 export default async function Providers({
-    children,
-    locale
+    children
 }: {
     children: React.ReactNode
-    locale: string
 }) {
-    return <I18nProviderClient locale={locale}>{children}</I18nProviderClient>
+    return (
+        <NextIntlClientProvider>
+            <ThemeProvider
+                attribute="class"
+                defaultTheme="system"
+                enableSystem
+                disableTransitionOnChange
+            >
+                {children}
+            </ThemeProvider>
+        </NextIntlClientProvider>
+    )
 }
