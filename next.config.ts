@@ -1,4 +1,5 @@
 import type { NextConfig } from 'next'
+import createNextIntlPlugin from 'next-intl/plugin'
 import createMDX from '@next/mdx'
 import remarkMath from 'remark-math'
 import remarkGfm from 'remark-gfm'
@@ -67,4 +68,6 @@ const withMDX = createMDX({
     }
 })
 
-export default withMDX(nextConfig)
+const withNextIntl = createNextIntlPlugin()
+
+export default withNextIntl(withMDX(nextConfig))
