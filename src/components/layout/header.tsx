@@ -1,16 +1,16 @@
 'use client'
 
 import Link from 'next/link'
-import { useI18n } from '~/locales/client'
 import { LanguageToggle } from './language-toggle'
 import { ThemeToggle } from './theme-toggle'
 import Logo from '../ui/logo'
 import { usePathname } from 'next/navigation'
 import { cn } from '~/lib/utils'
 import { useEffect, useState } from 'react'
+import { useTranslations } from 'next-intl'
 
 export default function Header() {
-    const t = useI18n()
+    const t = useTranslations('nav')
 
     return (
         <header className="bg-background/95 dark:supports-[backdrop-filter]:bg-background/80 supports-[backdrop-filter]:bg-background/50 sticky top-0 z-50 w-full backdrop-blur">
@@ -26,8 +26,8 @@ export default function Header() {
                         />
                     </Link>
                     <nav className="hidden items-center gap-6 sm:flex">
-                        <NavLink href="/">{t('nav.home')}</NavLink>
-                        <NavLink href="/blog">{t('nav.blog')}</NavLink>
+                        <NavLink href="/">{t('home')}</NavLink>
+                        <NavLink href="/blog">{t('blog')}</NavLink>
                     </nav>
                 </div>
                 <div className="flex items-center gap-1 sm:gap-2">

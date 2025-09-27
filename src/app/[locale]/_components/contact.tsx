@@ -1,20 +1,18 @@
 'use client'
 
 import Link from 'next/link'
-import { useI18n } from '~/locales/client'
 import SectionTitle from './section-title'
+import { useTranslations } from 'next-intl'
 
 export default function Contact() {
-    const t = useI18n()
+    const t = useTranslations('contact')
     const email = 'conrad.tinius.osvik@gmail.com'
     const socials = [{ name: 'GitHub', href: 'https://github.com/ConradOsvik' }]
 
     return (
         <section id="contact" className="flex flex-col">
-            <SectionTitle id="contact">{t('sections.contact')}</SectionTitle>
-            <p className="text-muted-foreground mt-3">
-                {t('contact.description')}
-            </p>
+            <SectionTitle id="contact">{t('sectionTitle')}</SectionTitle>
+            <p className="text-muted-foreground mt-3">{t('description')}</p>
             <div className="mt-3">
                 <Link
                     href={`mailto:${email}`}

@@ -1,7 +1,6 @@
 'use client'
 
 import Link from 'next/link'
-import { useI18n } from '~/locales/client'
 import {
     Card,
     CardContent,
@@ -25,6 +24,7 @@ import {
     Django
 } from './devicons'
 import SectionTitle from './section-title'
+import { useTranslations } from 'next-intl'
 
 type Project = {
     title: string
@@ -37,20 +37,20 @@ type Project = {
 }
 
 export default function Projects() {
-    const t = useI18n()
+    const t = useTranslations('projects')
 
     const projects: Project[] = [
         {
-            title: t('projects.photon.title'),
-            description: t('projects.photon.description'),
+            title: t('photon.title'),
+            description: t('photon.description'),
             stack: ['TypeScript', 'Hono', 'PostgreSQL', 'Redis', 'Drizzle'],
             links: {
                 github: 'https://github.com/TIHLDE/Photon'
             }
         },
         {
-            title: t('projects.coursestats.title'),
-            description: t('projects.coursestats.description'),
+            title: t('coursestats.title'),
+            description: t('coursestats.description'),
             stack: ['Next.js', 'SQLite', 'Drizzle', 'TypeScript'],
             links: {
                 github: 'https://github.com/ConradOsvik/coursestats',
@@ -58,16 +58,16 @@ export default function Projects() {
             }
         },
         {
-            title: t('projects.kontres.title'),
-            description: t('projects.kontres.description'),
+            title: t('kontres.title'),
+            description: t('kontres.description'),
             stack: ['Next.js', 'tRPC', 'PostgreSQL', 'Prisma', 'TypeScript'],
             links: {
                 github: 'https://github.com/TIHLDE/kontresv2'
             }
         },
         {
-            title: t('projects.kvark.title'),
-            description: t('projects.kvark.description'),
+            title: t('kvark.title'),
+            description: t('kvark.description'),
             stack: [
                 'React',
                 'Django',
@@ -83,7 +83,7 @@ export default function Projects() {
 
     return (
         <section id="projects" className="flex flex-col">
-            <SectionTitle id="projects">{t('sections.projects')}</SectionTitle>
+            <SectionTitle id="projects">{t('sectionTitle')}</SectionTitle>
             <div className="mt-4 space-y-4">
                 {projects.map((project) => (
                     <Card key={project.title}>
@@ -154,7 +154,7 @@ export default function Projects() {
                                             className="underline underline-offset-4 hover:opacity-80"
                                             aria-label={`Open website for ${project.title}`}
                                         >
-                                            {t('projects.links.website')}
+                                            {t('links.website')}
                                         </Link>
                                     )}
                                     {project.links?.github && (
@@ -167,7 +167,7 @@ export default function Projects() {
                                             className="underline underline-offset-4 hover:opacity-80"
                                             aria-label={`Open GitHub repo for ${project.title}`}
                                         >
-                                            {t('projects.links.github')}
+                                            {t('links.github')}
                                         </Link>
                                     )}
                                 </div>

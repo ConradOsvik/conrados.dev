@@ -4,15 +4,15 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { cn } from '~/lib/utils'
-import { useI18n } from '~/locales/client'
+import { useTranslations } from 'next-intl'
 
 export default function MobileNav() {
-    const t = useI18n()
+    const t = useTranslations('nav')
 
     return (
         <nav className="bg-foreground/95 dark:supports-[backdrop-filter]:bg-foreground/10 supports-[backdrop-filter]:bg-foreground/10 fixed bottom-4 left-1/2 flex -translate-x-1/2 items-center justify-center gap-2 rounded-full p-2 backdrop-blur md:hidden">
-            <NavLink href="/">{t('nav.home')}</NavLink>
-            <NavLink href="/blog">{t('nav.blog')}</NavLink>
+            <NavLink href="/">{t('home')}</NavLink>
+            <NavLink href="/blog">{t('blog')}</NavLink>
         </nav>
     )
 }

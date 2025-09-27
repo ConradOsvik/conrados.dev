@@ -1,6 +1,5 @@
 'use client'
 
-import { useI18n } from '~/locales/client'
 import SkillBadge from './skill-badge'
 import {
     JavaScript,
@@ -31,6 +30,7 @@ import {
     Tailwind
 } from './devicons'
 import SectionTitle from './section-title'
+import { useTranslations } from 'next-intl'
 
 type Skill = {
     label: string
@@ -38,10 +38,10 @@ type Skill = {
 }
 
 export default function Skills() {
-    const t = useI18n()
+    const t = useTranslations('skills')
 
     const skills: Record<string, Skill[]> = {
-        [t('skills.languages')]: [
+        [t('languages')]: [
             { label: 'JavaScript', icon: <JavaScript /> },
             { label: 'TypeScript', icon: <TypeScript /> },
             { label: 'HTML', icon: <HTML /> },
@@ -52,13 +52,13 @@ export default function Skills() {
             { label: 'Rust', icon: <Rust /> },
             { label: 'C', icon: <C /> }
         ],
-        [t('skills.libraries')]: [
+        [t('libraries')]: [
             { label: 'Drizzle', icon: <Drizzle /> },
             { label: 'Prisma', icon: <Prisma /> },
             { label: 'tRPC', icon: <TRPC /> },
             { label: 'Tailwind', icon: <Tailwind /> }
         ],
-        [t('skills.frameworks')]: [
+        [t('frameworks')]: [
             { label: 'React', icon: <React /> },
             { label: 'Next.js', icon: <Next /> },
             { label: 'SvelteKit', icon: <Svelte /> },
@@ -67,14 +67,14 @@ export default function Skills() {
             { label: 'Hono', icon: <Hono /> },
             { label: 'Spring', icon: <Spring /> }
         ],
-        [t('skills.databases')]: [
+        [t('databases')]: [
             { label: 'MySQL', icon: <MySQL /> },
             { label: 'PostgreSQL', icon: <PostgreSQL /> },
             { label: 'SQLite', icon: <SQLite /> },
             { label: 'NoSQL', icon: undefined },
             { label: 'Redis', icon: <Redis /> }
         ],
-        [t('skills.tools')]: [
+        [t('tools')]: [
             { label: 'Git', icon: <Git /> },
             { label: 'Docker', icon: <Docker /> }
         ]
@@ -82,7 +82,7 @@ export default function Skills() {
 
     return (
         <section id="skills" className="flex flex-col">
-            <SectionTitle id="skills">{t('sections.skills')}</SectionTitle>
+            <SectionTitle id="skills">{t('sectionTitle')}</SectionTitle>
             <div className="mt-4 space-y-4">
                 {Object.entries(skills).map(([group, items]) => (
                     <div key={group}>

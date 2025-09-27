@@ -8,11 +8,18 @@ import {
 } from '~/components/ui/dropdown-menu'
 import { Button } from '../ui/button'
 import { LanguageIcon } from '@heroicons/react/24/solid'
-import { useChangeLocale, useCurrentLocale } from '~/locales/client'
+import { useLocale } from 'next-intl'
+import { useRouter, usePathname } from '~/i18n/navigation'
+import { Locale } from '~/i18n/config'
 
 export const LanguageToggle = () => {
-    const changeLocale = useChangeLocale()
-    const locale = useCurrentLocale()
+    const locale = useLocale()
+    const router = useRouter()
+    const pathname = usePathname()
+
+    const changeLocale = (locale: Locale) => {
+        router.push(pathname, { locale: locale })
+    }
 
     return (
         <DropdownMenu>

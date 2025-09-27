@@ -1,11 +1,10 @@
-// Updated about.tsx
 'use client'
 
-import { useI18n } from '~/locales/client'
+import { useTranslations } from 'next-intl'
 import ProfileImage from './profile-image'
 
 export default function About() {
-    const t = useI18n()
+    const t = useTranslations('hero')
 
     return (
         <section
@@ -25,7 +24,7 @@ export default function About() {
             <div className="flex-1 text-center sm:text-left">
                 <h1 className="typo-display-sm">Conrad Osvik</h1>
                 <p className="typo-body-md mt-3 max-w-prose text-balance">
-                    {t('hero.intro')}
+                    {t('intro')}
                 </p>
             </div>
 

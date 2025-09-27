@@ -1,6 +1,5 @@
 'use client'
 
-import { useI18n } from '~/locales/client'
 import {
     Card,
     CardContent,
@@ -10,24 +9,23 @@ import {
     CardAction
 } from '~/components/ui/card'
 import SectionTitle from './section-title'
+import { useTranslations } from 'next-intl'
 
 export default function Education() {
-    const t = useI18n()
+    const t = useTranslations('education')
 
     const schools = [
         {
-            degree: t('education.ntnu.degree'),
-            school: t('education.ntnu.school'),
-            period: t('education.ntnu.period'),
-            details: t('education.ntnu.details')
+            degree: t('ntnu.degree'),
+            school: t('ntnu.school'),
+            period: t('ntnu.period'),
+            details: t('ntnu.details')
         }
     ]
 
     return (
         <section id="education" className="flex flex-col">
-            <SectionTitle id="education">
-                {t('sections.education')}
-            </SectionTitle>
+            <SectionTitle id="education">{t('sectionTitle')}</SectionTitle>
             <div className="mt-4 space-y-4">
                 {schools.map((s) => (
                     <Card key={s.degree}>

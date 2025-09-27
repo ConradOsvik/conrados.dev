@@ -1,6 +1,5 @@
 'use client'
 
-import { useI18n } from '~/locales/client'
 import {
     Card,
     CardContent,
@@ -10,30 +9,29 @@ import {
     CardAction
 } from '~/components/ui/card'
 import SectionTitle from './section-title'
+import { useTranslations } from 'next-intl'
 
 export default function Experience() {
-    const t = useI18n()
+    const t = useTranslations('experience')
 
     const roles = [
         {
-            role: t('experience.tihlde.role'),
-            org: t('experience.tihlde.org'),
-            location: t('experience.tihlde.location'),
-            period: t('experience.tihlde.period'),
+            role: t('tihlde.role'),
+            org: t('tihlde.org'),
+            location: t('tihlde.location'),
+            period: t('tihlde.period'),
             highlights: [
-                t('experience.tihlde.highlight1'),
-                t('experience.tihlde.highlight2'),
-                t('experience.tihlde.highlight3'),
-                t('experience.tihlde.highlight4')
+                t('tihlde.highlight1'),
+                t('tihlde.highlight2'),
+                t('tihlde.highlight3'),
+                t('tihlde.highlight4')
             ]
         }
     ]
 
     return (
         <section id="experience" className="flex flex-col">
-            <SectionTitle id="experience">
-                {t('sections.experience')}
-            </SectionTitle>
+            <SectionTitle id="experience">{t('sectionTitle')}</SectionTitle>
             <div className="mt-4 space-y-4">
                 {roles.map((r) => (
                     <Card key={r.role}>
