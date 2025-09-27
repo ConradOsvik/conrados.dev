@@ -11,7 +11,6 @@ type Metadata = {
     author: string
     image: StaticImageData
     tags?: string[]
-    toc?: boolean
 }
 
 type Post = {
@@ -19,24 +18,10 @@ type Post = {
     tableOfContents: Toc
     toc: boolean
     default: React.ComponentType
-}
-
-export type PostMetadata = {
-    title: string
-    description: string
-    date: string
-    author: string
-    image: StaticImageData
-    tags?: string[]
-    toc?: boolean
-}
-
-export type PostData = {
     slug: string
-    metadata: PostMetadata
 }
 
-export async function getAllPosts(): Promise<PostData[]> {
+export async function getPosts(locale: string): Promise<Post[]> {
     const postsDirectory = path.join(process.cwd(), 'src', 'content', 'posts')
 
     // Get all post directories
@@ -47,11 +32,11 @@ export async function getAllPosts(): Promise<PostData[]> {
     // Filter to only directories
     const postDirs = postDirectories.filter((dirent) => dirent.isDirectory())
 
-    const posts: PostData[] = []
+    const posts: Post[] = []
 
     for (const dirent of postDirs) {
         const slug = dirent.name
-        const postPath = path.join(postsDirectory, slug, 'post.mdx')
+        const postPath = path.join(postsDirectory, slug, `${locale}.mdx`)
 
         try {
             // Check if the post file exists
@@ -60,15 +45,16 @@ export async function getAllPosts(): Promise<PostData[]> {
             }
 
             // Dynamically import the post to get metadata
-            const post = await import(`~/content/posts/${slug}/post.mdx`)
-            const { metadata } = post as { metadata: PostMetadata }
+            const post = (await import(
+                `~/content/posts/${slug}/${locale}.mdx`
+            )) as Omit<Post, 'slug'>
 
             posts.push({
-                slug,
-                metadata
+                ...post,
+                slug
             })
         } catch (error) {
-            console.error(`Error loading post ${slug}:`, error)
+            console.error(`Error loading post ${slug}/${locale}:`, error)
             continue
         }
     }
@@ -81,13 +67,17 @@ export async function getAllPosts(): Promise<PostData[]> {
     )
 }
 
-export async function getPostBySlug(slug: string): Promise<Post> {
+export async function getPost(locale: string, slug: string): Promise<Post> {
     const postsDirectory = path.join(process.cwd(), 'src', 'content', 'posts')
-    const postPath = path.join(postsDirectory, slug, 'post.mdx')
+    const postPath = path.join(postsDirectory, slug, `${locale}.mdx`)
 
     if (!fs.existsSync(postPath)) {
         return notFound()
     }
 
-    return (await import(`~/content/posts/${slug}/post.mdx`)) as Post
+    const post = (await import(
+        `~/content/posts/${slug}/${locale}.mdx`
+    )) as Omit<Post, 'slug'>
+
+    return { ...post, slug }
 }

@@ -1,5 +1,4 @@
-import { getAllPosts } from '~/lib/posts'
-import type { PostData } from '~/lib/posts'
+import { getPosts } from '~/lib/posts'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -8,15 +7,18 @@ export const metadata = {
     description: 'Blogs by Conrad Osvik'
 }
 
-export default async function BlogsPage() {
-    const posts = await getAllPosts()
+export default async function BlogsPage({
+    params
+}: PageProps<'/[locale]/blog/[...slug]'>) {
+    const { locale } = await params
+    const posts = await getPosts(locale)
 
     return (
         <div className="flex w-full max-w-xl flex-col items-center justify-start">
             <h1 className="typo-headline-lg">Blogs</h1>
 
             <div className="mt-8 grid w-full grid-cols-1 gap-4 md:grid-cols-2">
-                {posts.map((post: PostData) => (
+                {posts.map((post) => (
                     <Link
                         key={post.slug}
                         href={{ pathname: `/blog/${post.slug}` }}

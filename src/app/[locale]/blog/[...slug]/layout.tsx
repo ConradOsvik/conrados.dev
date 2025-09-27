@@ -1,12 +1,13 @@
 import { TableOfContents } from './_components/table-of-contents'
-import { getPostBySlug } from '~/lib/posts'
+import { getPost } from '~/lib/posts'
 
 export default async function BlogLayout({
     children,
     params
 }: LayoutProps<'/[locale]/blog/[...slug]'>) {
-    const slugPath = (await params).slug.join('/')
-    const post = await getPostBySlug(slugPath)
+    const { locale, slug } = await params
+    const slugPath = slug.join('/')
+    const post = await getPost(locale, slugPath)
 
     const { tableOfContents, toc } = post
 

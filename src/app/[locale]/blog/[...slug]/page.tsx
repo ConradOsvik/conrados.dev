@@ -1,15 +1,21 @@
 import { PostHeader } from '~/app/[locale]/blog/[...slug]/_components/post-header'
-import { getAllPosts, getPostBySlug } from '~/lib/posts'
+import { getPosts, getPost } from '~/lib/posts'
 
-export const generateStaticParams = async () => {
-    const posts = await getAllPosts()
+export const generateStaticParams = async ({
+    params: { locale }
+}: {
+    params: { locale: string }
+}) => {
+    const posts = await getPosts(locale)
     return posts.map((post) => post.slug)
 }
 
 export async function generateMetadata({
     params
 }: PageProps<'/[locale]/blog/[...slug]'>) {
-    const post = await getPostBySlug((await params).slug.join('/'))
+    const { locale, slug } = await params
+    const slugPath = slug.join('/')
+    const post = await getPost(locale, slugPath)
 
     const { metadata } = post
 
@@ -22,8 +28,9 @@ export async function generateMetadata({
 export default async function BlogPage({
     params
 }: PageProps<'/[locale]/blog/[...slug]'>) {
-    const slugPath = (await params).slug.join('/')
-    const post = await getPostBySlug(slugPath)
+    const { locale, slug } = await params
+    const slugPath = slug.join('/')
+    const post = await getPost(locale, slugPath)
 
     const { default: Post, metadata } = post
 
