@@ -1,0 +1,48 @@
+---
+import { Image } from 'astro:assets'
+import { Badge } from '~/components/ui/badge'
+import type { CollectionEntry } from 'astro:content'
+
+interface Props {
+    post: CollectionEntry<'blog'>
+}
+
+const { post } = Astro.props
+const { title, description, date, cover, tags } = post.data
+
+const formattedDate = new Intl.DateTimeFormat('en', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+}).format(date)
+---
+
+<header class="mb-10">
+    {
+        cover && (
+            <div class="mb-6 overflow-hidden rounded-xl">
+                <Image
+                    src={cover}
+                    alt={`Cover for ${title}`}
+                    class="h-full w-full object-cover"
+                    widths={[640, 960, 1280]}
+                    sizes="(max-width: 640px) 640px, (max-width: 960px) 960px, 1280px"
+                />
+            </div>
+        )
+    }
+    <h1 class="typo-headline-md">{title}</h1>
+    {description && <p class="typo-body-md mt-3">{description}</p>}
+    <div class="mt-4 flex flex-wrap items-center gap-x-3 gap-y-2 text-xs text-muted-foreground">
+        <time datetime={date.toISOString()}>{formattedDate}</time>
+        {
+            tags?.length && (
+                <span class="flex flex-wrap items-center gap-1.5 ml-1">
+                    {tags.map((tag) => (
+                        <Badge variant="secondary">{tag}</Badge>
+                    ))}
+                </span>
+            )
+        }
+    </div>
+</header>

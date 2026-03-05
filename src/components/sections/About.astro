@@ -1,0 +1,30 @@
+---
+import ProfileImage from '~/components/ProfileImage'
+---
+
+<section
+    id="hero"
+    class="flex flex-col items-center gap-8 pt-4 sm:flex-row sm:items-start sm:justify-between"
+>
+    <div class="order-first flex justify-center sm:hidden">
+        <div class="w-28">
+            <ProfileImage client:load />
+        </div>
+    </div>
+
+    <div class="flex-1 text-center sm:text-left">
+        <h1 class="typo-display-sm">Conrad Osvik</h1>
+        <p class="typo-body-md mt-4 max-w-prose text-balance">
+            Hey, I'm Conrad. I like to build things that people enjoy using!
+            I've been programming for over 6 years, and I'm currently studying a
+            B.Sc in Computer Science at NTNU. Outside of coding, I enjoy skiing,
+            gaming, and working with my student association.
+        </p>
+    </div>
+
+    <div class="hidden sm:flex sm:shrink-0">
+        <div class="w-40">
+            <ProfileImage client:load />
+        </div>
+    </div>
+</section>

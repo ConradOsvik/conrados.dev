@@ -21,8 +21,16 @@ type Post = {
     slug: string
 }
 
+const POST_FILE = 'page.mdx'
+
 export async function getPosts(locale: string): Promise<Post[]> {
-    const postsDirectory = path.join(process.cwd(), 'src', 'content', 'posts')
+    const postsDirectory = path.join(
+        process.cwd(),
+        'src',
+        'content',
+        'posts',
+        locale
+    )
 
     // Get all post directories
     const postDirectories = await fs.promises.readdir(postsDirectory, {
@@ -36,7 +44,7 @@ export async function getPosts(locale: string): Promise<Post[]> {
 
     for (const dirent of postDirs) {
         const slug = dirent.name
-        const postPath = path.join(postsDirectory, slug, `${locale}.mdx`)
+        const postPath = path.join(postsDirectory, slug, POST_FILE)
 
         try {
             // Check if the post file exists
@@ -46,7 +54,7 @@ export async function getPosts(locale: string): Promise<Post[]> {
 
             // Dynamically import the post to get metadata
             const post = (await import(
-                `~/content/posts/${slug}/${locale}.mdx`
+                `~/content/posts/${locale}/${slug}/${POST_FILE}`
             )) as Omit<Post, 'slug'>
 
             posts.push({
@@ -54,7 +62,7 @@ export async function getPosts(locale: string): Promise<Post[]> {
                 slug
             })
         } catch (error) {
-            console.error(`Error loading post ${slug}/${locale}:`, error)
+            console.error(`Error loading post ${locale}/${slug}:`, error)
             continue
         }
     }
@@ -68,15 +76,21 @@ export async function getPosts(locale: string): Promise<Post[]> {
 }
 
 export async function getPost(locale: string, slug: string): Promise<Post> {
-    const postsDirectory = path.join(process.cwd(), 'src', 'content', 'posts')
-    const postPath = path.join(postsDirectory, slug, `${locale}.mdx`)
+    const postsDirectory = path.join(
+        process.cwd(),
+        'src',
+        'content',
+        'posts',
+        locale
+    )
+    const postPath = path.join(postsDirectory, slug, POST_FILE)
 
     if (!fs.existsSync(postPath)) {
         return notFound()
     }
 
     const post = (await import(
-        `~/content/posts/${slug}/${locale}.mdx`
+        `~/content/posts/${locale}/${slug}/${POST_FILE}`
     )) as Omit<Post, 'slug'>
 
     return { ...post, slug }

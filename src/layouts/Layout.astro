@@ -1,0 +1,83 @@
+---
+import '~/styles/globals.css'
+import Header from '~/components/layout/Header.astro'
+import Footer from '~/components/layout/Footer.astro'
+import MobileNav from '~/components/layout/MobileNav.astro'
+
+interface Props {
+    title?: string
+    description?: string
+    /** Absolute URL to the OG image (1200px wide JPEG recommended) */
+    ogImage?: string
+    /** Defaults to 'website'; use 'article' for blog posts */
+    ogType?: 'website' | 'article'
+}
+
+const {
+    title = 'Conrad Osvik',
+    description = 'Portfolio of Conrad Osvik',
+    ogImage,
+    ogType = 'website'
+} = Astro.props
+
+const canonicalUrl = Astro.url.href
+---
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content={Astro.generator} />
+        <link rel="icon" href="/favicon.ico" />
+        <link rel="canonical" href={canonicalUrl} />
+
+        <!-- Primary meta -->
+        <title>{title}</title>
+        <meta name="description" content={description} />
+
+        <!-- Open Graph -->
+        <meta property="og:site_name" content="Conrad Osvik" />
+        <meta property="og:type" content={ogType} />
+        <meta property="og:url" content={canonicalUrl} />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
+        {ogImage && <meta property="og:image" content={ogImage} />}
+        {ogImage && <meta property="og:image:width" content="1200" />}
+
+        <!-- Twitter / X -->
+        <meta name="twitter:card" content={ogImage ? 'summary_large_image' : 'summary'} />
+        <meta name="twitter:title" content={title} />
+        <meta name="twitter:description" content={description} />
+        {ogImage && <meta name="twitter:image" content={ogImage} />}
+
+        <!-- Fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Geist:wght@100..900&family=Geist+Mono:wght@100..900&display=swap"
+            rel="stylesheet"
+        />
+
+        <!-- Theme (runs before paint to avoid flash) -->
+        <script is:inline>
+            const stored = localStorage.getItem('theme')
+            const prefersDark = window.matchMedia(
+                '(prefers-color-scheme: dark)'
+            ).matches
+            const theme = stored ?? (prefersDark ? 'dark' : 'light')
+            document.documentElement.classList.toggle('dark', theme === 'dark')
+        </script>
+    </head>
+    <body
+        class="flex min-h-screen flex-col items-center justify-start font-sans antialiased"
+        style="--font-geist-sans: 'Geist'; --font-geist-mono: 'Geist Mono'; --font-bricolage: 'Bricolage Grotesque';"
+    >
+        <Header />
+        <main class="flex w-full flex-1 justify-center px-6">
+            <slot />
+        </main>
+        <MobileNav />
+        <Footer />
+    </body>
+</html>

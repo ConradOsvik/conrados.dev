@@ -1,0 +1,36 @@
+---
+const schools = [
+    {
+        degree: 'B.Sc. in Computer Science',
+        school: 'NTNU – Norwegian University of Science and Technology',
+        period: '2023 – 2026',
+        details: 'Focus on software engineering, algorithms, and machine learning.'
+    }
+]
+---
+
+<section id="education" class="flex flex-col gap-4">
+    <h2 class="section-title">Education</h2>
+    <div class="space-y-3">
+        {
+            schools.map((s) => (
+                <div class="bg-card text-card-foreground rounded-xl ring-1 ring-foreground/10 shadow-xs overflow-hidden">
+                    <div class="px-5 py-4">
+                        <div class="flex items-start justify-between gap-4">
+                            <div>
+                                <p class="font-semibold text-sm leading-snug">{s.degree}</p>
+                                <p class="text-muted-foreground text-sm mt-0.5">{s.school}</p>
+                            </div>
+                            <span class="text-muted-foreground text-xs whitespace-nowrap mt-0.5">
+                                {s.period}
+                            </span>
+                        </div>
+                        {s.details && (
+                            <p class="mt-3 text-sm text-muted-foreground">{s.details}</p>
+                        )}
+                    </div>
+                </div>
+            ))
+        }
+    </div>
+</section>

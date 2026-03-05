@@ -1,0 +1,26 @@
+---
+import Layout from '~/layouts/Layout.astro'
+import About from '~/components/sections/About.astro'
+import Skills from '~/components/sections/Skills'
+import Projects from '~/components/sections/Projects'
+import Experience from '~/components/sections/Experience.astro'
+import Education from '~/components/sections/Education.astro'
+import Contact from '~/components/sections/Contact.astro'
+import { Separator } from '~/components/ui/separator'
+---
+
+<Layout>
+    <div class="flex w-full max-w-xl flex-col gap-8 py-8">
+        <About />
+        <Separator />
+        <Skills />
+        <Separator />
+        <Projects />
+        <Separator />
+        <Experience />
+        <Separator />
+        <Education />
+        <Separator />
+        <Contact />
+    </div>
+</Layout>
