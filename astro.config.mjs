@@ -10,8 +10,15 @@ import rehypeKatex from 'rehype-katex'
 import remarkGfm from 'remark-gfm'
 import remarkMath from 'remark-math'
 
+const site =
+    process.env.VERCEL_ENV === 'production'
+        ? 'https://conrados.dev'
+        : process.env.VERCEL_URL
+          ? `https://${process.env.VERCEL_URL}`
+          : 'https://conrados.dev'
+
 export default defineConfig({
-    site: 'https://conrados.dev',
+    site,
     markdown: {
         // rehypeSlug and rehypeKatex go here so they're included in the MDX
         // pipeline's defaults, alongside the rehype-expressive-code plugin that
