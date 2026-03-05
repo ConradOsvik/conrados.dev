@@ -24,12 +24,14 @@ const ogImageData = post.data.cover
     ? await getImage({ src: post.data.cover, width: 1200, format: 'jpeg' })
     : null
 const ogImageUrl = ogImageData ? new URL(ogImageData.src, Astro.site).href : undefined
+const ogImageHeight = ogImageData?.attributes.height as number | undefined
 ---
 
 <Layout
     title={`${post.data.title} – Conrad Osvik`}
     description={post.data.description}
     ogImage={ogImageUrl}
+    ogImageHeight={ogImageHeight}
     ogType="article"
 >
     <div class="w-full max-w-xl py-8">
