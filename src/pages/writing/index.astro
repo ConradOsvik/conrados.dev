@@ -48,7 +48,7 @@ const items = posts.map((post) => ({
             posts.length === 0 ? (
                 <p class="typo-body-md">No posts yet. Check back soon!</p>
             ) : (
-                <WritingList posts={items} allTags={allTags} client:load />
+                    <WritingList posts={items} allTags={allTags} client:load />
             )
         }
     </div>

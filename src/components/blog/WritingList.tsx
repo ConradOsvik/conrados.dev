@@ -1,4 +1,5 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useCallback, useEffect } from 'react'
+import { motion } from 'motion/react'
 import {
     HoverHighlightRoot,
     HoverHighlightItem
@@ -15,6 +16,15 @@ interface Post {
     year: number
 }
 
+function tagsFromUrl(allTags: string[]): Set<string> {
+    if (typeof window === 'undefined') return new Set()
+    const params = new URLSearchParams(window.location.search)
+    const tags = params.get('tags')
+    return tags
+        ? new Set(tags.split(',').filter((t) => allTags.includes(t)))
+        : new Set()
+}
+
 export function WritingList({
     posts,
     allTags
@@ -22,15 +32,40 @@ export function WritingList({
     posts: Post[]
     allTags: string[]
 }) {
-    const [selectedTags, setSelectedTags] = useState<Set<string>>(new Set())
+    const [selectedTags, setSelectedTags] = useState<Set<string>>(() =>
+        tagsFromUrl(allTags)
+    )
+
+    const pushUrl = useCallback((tags: Set<string>) => {
+        const url = new URL(window.location.href)
+        if (tags.size === 0) {
+            url.searchParams.delete('tags')
+        } else {
+            url.searchParams.set('tags', [...tags].sort().join(','))
+        }
+        window.history.pushState({}, '', url)
+    }, [])
+
+    // Sync state from URL on back/forward
+    useEffect(() => {
+        const onPopState = () => setSelectedTags(tagsFromUrl(allTags))
+        window.addEventListener('popstate', onPopState)
+        return () => window.removeEventListener('popstate', onPopState)
+    }, [allTags])
 
     const toggleTag = (tag: string) => {
         setSelectedTags((prev) => {
             const next = new Set(prev)
             if (next.has(tag)) next.delete(tag)
             else next.add(tag)
+            pushUrl(next)
             return next
         })
+    }
+
+    const clearTags = () => {
+        setSelectedTags(new Set())
+        pushUrl(new Set())
     }
 
     const filteredByYear = useMemo(() => {
@@ -48,7 +83,13 @@ export function WritingList({
     }, [posts, selectedTags])
 
     return (
-        <div className="flex flex-col gap-8">
+        <motion.div
+            className="flex flex-col gap-8"
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, ease: 'easeOut' }}
+        >
             <div className="flex flex-wrap gap-1.5">
                 {allTags.map((tag) => {
                     const active = selectedTags.has(tag)
@@ -68,7 +109,7 @@ export function WritingList({
                 })}
                 {selectedTags.size > 0 && (
                     <button
-                        onClick={() => setSelectedTags(new Set())}
+                        onClick={clearTags}
                         className="rounded-full px-2.5 py-0.5 text-xs text-muted-foreground transition-colors hover:text-foreground"
                     >
                         Clear
@@ -127,6 +168,6 @@ export function WritingList({
                     </section>
                 ))
             )}
-        </div>
+        </motion.div>
     )
 }
