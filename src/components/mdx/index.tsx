@@ -1,4 +1,3 @@
-import type { MDXComponents } from 'mdx/types'
 import type { ComponentPropsWithoutRef } from 'react'
 import { cn } from '~/lib/utils'
 
@@ -16,11 +15,24 @@ function createHeading(Tag: HeadingTag, baseClasses: string) {
                 <a
                     href={`#${id}`}
                     data-heading-link
-                    className="group inline-flex items-center gap-1.5 rounded-sm outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
+                    className="group focus-visible:ring-ring/50 inline-flex items-center gap-1.5 rounded-sm outline-none focus-visible:ring-2"
                 >
                     {children}
-                    <span className="heading-link-icon shrink-0 opacity-0 transition-opacity group-hover:opacity-100 text-muted-foreground">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                    <span className="heading-link-icon text-muted-foreground shrink-0 opacity-0 transition-opacity group-hover:opacity-100">
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="16"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                        >
+                            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+                            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+                        </svg>
                     </span>
                 </a>
             </Tag>
@@ -30,7 +42,7 @@ function createHeading(Tag: HeadingTag, baseClasses: string) {
     return Component
 }
 
-export const mdxComponents: MDXComponents = {
+export const mdxComponents: Record<string, unknown> = {
     h1: createHeading(
         'h1',
         'text-foreground text-2xl font-bold tracking-tight scroll-m-20 mt-8 mb-6 first:mt-0 lg:text-3xl'
@@ -47,21 +59,29 @@ export const mdxComponents: MDXComponents = {
         'h4',
         'text-foreground text-base font-semibold tracking-tight scroll-m-20 mt-5 mb-3 first:mt-0'
     ),
-    a: ({ className, ...props }) => (
+    a: ({ className, ...props }: ComponentPropsWithoutRef<'a'>) => (
         <a
             className={cn(
-                'text-primary font-medium underline underline-offset-4 decoration-primary/30 hover:decoration-primary transition-colors rounded-sm outline-none focus-visible:ring-2 focus-visible:ring-ring/50',
+                'text-primary decoration-primary/30 hover:decoration-primary focus-visible:ring-ring/50 rounded-sm font-medium underline underline-offset-4 transition-colors outline-none focus-visible:ring-2',
                 className
             )}
             {...props}
         />
     ),
-    img: ({ src, alt, title, className, ...props }) => {
+    img: ({
+        src,
+        alt,
+        title,
+        className,
+        ...props
+    }: ComponentPropsWithoutRef<'img'>) => {
         // Astro imports inline MDX images as ImageMetadata objects rather than
         // plain URL strings. Extract .src (and dimensions) when that's the case.
         const isMetadata =
             src !== null && typeof src === 'object' && 'src' in (src as object)
-        const resolvedSrc = isMetadata ? (src as { src: string }).src : (src as string)
+        const resolvedSrc = isMetadata
+            ? (src as { src: string }).src
+            : (src as string)
         const resolvedWidth = isMetadata
             ? (src as { width: number }).width
             : undefined
@@ -76,7 +96,7 @@ export const mdxComponents: MDXComponents = {
                 width={resolvedWidth}
                 height={resolvedHeight}
                 className={cn(
-                    'h-auto w-full rounded-lg border border-border',
+                    'border-border h-auto w-full rounded-lg border',
                     className
                 )}
                 {...props}
@@ -86,16 +106,20 @@ export const mdxComponents: MDXComponents = {
         return (
             <figure>
                 {image}
-                <figcaption className="mt-2 text-center text-sm text-muted-foreground">
+                <figcaption className="text-muted-foreground mt-2 text-center text-sm">
                     {title}
                 </figcaption>
             </figure>
         )
     },
-    hr: ({ className, ...props }) => (
+    hr: ({ className, ...props }: ComponentPropsWithoutRef<'hr'>) => (
         <hr className={cn('border-border my-8', className)} {...props} />
     ),
-    code: ({ className, children, ...props }) => (
+    code: ({
+        className,
+        children,
+        ...props
+    }: ComponentPropsWithoutRef<'code'>) => (
         <code
             className={cn(
                 'bg-primary/5 text-foreground rounded px-1.5 py-0.5 font-mono text-[0.875em] before:content-none after:content-none',
