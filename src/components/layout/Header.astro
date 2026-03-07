@@ -1,57 +1,34 @@
 ---
 import Logo from '~/components/ui/logo'
 import { ThemeToggle } from '~/components/layout/ThemeToggle'
+import { NavLinks } from '~/components/layout/NavLinks'
 
 const pathname = Astro.url.pathname
-
-function isActive(href: string) {
-    if (href === '/') return pathname === '/'
-    return pathname === href || pathname.startsWith(href + '/')
-}
 ---
 
-<header class="sticky top-0 z-50 w-full">
-    <!-- Backdrop extends ~2rem below the nav bar and fades out, softening the blur edge -->
+<header class="sticky top-0 z-50 w-full" transition:persist transition:animate="none">
+    <!-- Backdrop blur — contained to header area -->
     <div
         aria-hidden="true"
-        class="pointer-events-none absolute inset-x-0 top-0 -bottom-12 supports-[backdrop-filter]:backdrop-blur bg-background/95 supports-[backdrop-filter]:bg-background/50 dark:supports-[backdrop-filter]:bg-background/80 [mask-image:linear-gradient(to_bottom,black_calc(100%_-_2.5rem),transparent_100%)] [-webkit-mask-image:linear-gradient(to_bottom,black_calc(100%_-_2.5rem),transparent_100%)]"
+        class="pointer-events-none absolute inset-0 supports-[backdrop-filter]:backdrop-blur-md bg-background/90 supports-[backdrop-filter]:bg-background/60 dark:supports-[backdrop-filter]:bg-background/80"
+    />
+    <!-- Diffused bottom border -->
+    <div
+        aria-hidden="true"
+        class="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-border/50 to-transparent"
     />
     <div
-        class="relative mx-auto flex w-full max-w-xl items-center justify-between px-6 py-4 md:px-0"
+        class="relative mx-auto flex w-full max-w-xl items-center justify-between px-6 py-3 md:px-0"
     >
-        <div class="flex items-center gap-3 sm:gap-4">
+        <div class="flex items-center gap-3">
             <a href="/" class="flex items-center rounded-sm outline-none focus-visible:ring-2 focus-visible:ring-ring/50">
                 <Logo
                     size={32}
-                    className="transition-opacity duration-200 hover:opacity-80"
                 />
             </a>
-            <nav class="hidden items-center gap-6 sm:flex">
-                <a
-                    href="/"
-                    class:list={[
-                        'hover:text-foreground font-medium transition-colors rounded-sm outline-none focus-visible:ring-2 focus-visible:ring-ring/50',
-                        isActive('/')
-                            ? 'text-foreground'
-                            : 'text-muted-foreground'
-                    ]}
-                >
-                    Home
-                </a>
-                <a
-                    href="/blog"
-                    class:list={[
-                        'hover:text-foreground font-medium transition-colors rounded-sm outline-none focus-visible:ring-2 focus-visible:ring-ring/50',
-                        isActive('/blog')
-                            ? 'text-foreground'
-                            : 'text-muted-foreground'
-                    ]}
-                >
-                    Blog
-                </a>
-            </nav>
+            <NavLinks pathname={pathname} client:load />
         </div>
-        <div class="flex items-center gap-1 sm:gap-2">
+        <div class="flex items-center">
             <ThemeToggle client:load />
         </div>
     </div>

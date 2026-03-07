@@ -1,0 +1,18 @@
+---
+title: 'Making sense of React Server Components'
+description: 'A mental model for understanding where RSCs fit and when to use them.'
+date: '2025-07-12'
+tags: ['react', 'rsc', 'nextjs']
+---
+
+## The confusion
+
+React Server Components are one of the most misunderstood features in the React ecosystem. The naming doesn't help.
+
+## A simple mental model
+
+Think of RSCs as components that run once on the server and send their rendered output to the client. They can access databases and file systems directly, but they can't use hooks or browser APIs.
+
+## When to reach for them
+
+If your component fetches data and renders it without interactivity, it's a good candidate for a Server Component.

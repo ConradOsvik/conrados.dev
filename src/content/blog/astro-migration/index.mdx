@@ -1,0 +1,18 @@
+---
+title: 'Migrating my portfolio from Next.js to Astro'
+description: 'Why I switched frameworks and what I learned along the way.'
+date: '2025-08-30'
+tags: ['astro', 'nextjs', 'web']
+---
+
+## Why migrate?
+
+Next.js is a great framework, but for a mostly-static portfolio with a blog, it ships far more JavaScript than necessary.
+
+## The Astro approach
+
+Astro's island architecture lets you ship zero JS by default and opt in to interactivity only where needed. My theme toggle and hover effects are React islands — everything else is static HTML.
+
+## Was it worth it?
+
+The site went from ~200KB of client JS to under 50KB (excluding analytics). Build times dropped from 30 seconds to under 3.

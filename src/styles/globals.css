@@ -6,11 +6,12 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+    --animate-theme-icon: theme-icon 0.5s ease-out;
     --color-background: var(--background);
     --color-foreground: var(--foreground);
-    --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+    --font-sans: var(--font-sora), ui-sans-serif, system-ui, sans-serif;
     --font-mono: var(--font-geist-mono), ui-monospace, monospace;
-    --font-display: var(--font-bricolage), var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+    --font-display: var(--font-dm-serif-display), 'Georgia', serif;
     --color-ring: var(--ring);
     --color-input: var(--input);
     --color-border: var(--border);
@@ -33,49 +34,60 @@
     --radius-xl: calc(var(--radius) + 4px);
 }
 
-/* Light mode — warm off-white, slate-tinted text */
+/* Light mode — warm neutrals, no accent (primary = foreground) */
 :root {
-    --radius: 0.5rem;
-    --background: oklch(0.985 0.004 80);
-    --foreground: oklch(0.15 0.01 255);
-    --card: oklch(1 0 0);
-    --card-foreground: oklch(0.15 0.01 255);
-    --popover: oklch(1 0 0);
-    --popover-foreground: oklch(0.15 0.01 255);
-    --primary: oklch(0.18 0.01 255);
-    --primary-foreground: oklch(0.98 0.004 80);
-    --secondary: oklch(0.95 0.006 250);
-    --secondary-foreground: oklch(0.25 0.012 255);
-    --muted: oklch(0.95 0.004 250);
-    --muted-foreground: oklch(0.50 0.015 255);
-    --accent: oklch(0.95 0.006 250);
-    --accent-foreground: oklch(0.25 0.012 255);
+    --radius: 0.625rem;
+    --background: oklch(0.985 0.002 75);
+    --foreground: oklch(0.14 0.004 60);
+    --card: oklch(0.985 0.002 75);
+    --card-foreground: oklch(0.14 0.004 60);
+    --popover: oklch(0.985 0.002 75);
+    --popover-foreground: oklch(0.14 0.004 60);
+    --primary: oklch(0.14 0.004 60);
+    --primary-foreground: oklch(0.985 0.002 75);
+    --secondary: oklch(0.95 0.003 70);
+    --secondary-foreground: oklch(0.25 0.004 60);
+    --muted: oklch(0.95 0.003 70);
+    --muted-foreground: oklch(0.45 0.005 60);
+    --accent: oklch(0.14 0.004 60);
+    --accent-foreground: oklch(0.985 0.002 75);
     --destructive: oklch(0.577 0.245 27.325);
-    --border: oklch(0.88 0.008 250);
-    --input: oklch(0.88 0.008 250);
-    --ring: oklch(0.60 0.015 255);
+    --border: oklch(0.90 0.004 70);
+    --input: oklch(0.90 0.004 70);
+    --ring: oklch(0.14 0.004 60);
 }
 
-/* Dark mode — deep slate, not pure black */
+/* Dark mode — warm deep dark */
 .dark {
-    --background: oklch(0.135 0.008 255);
-    --foreground: oklch(0.96 0.004 80);
-    --card: oklch(0.175 0.008 255);
-    --card-foreground: oklch(0.96 0.004 80);
-    --popover: oklch(0.175 0.008 255);
-    --popover-foreground: oklch(0.96 0.004 80);
-    --primary: oklch(0.94 0.004 80);
-    --primary-foreground: oklch(0.15 0.01 255);
-    --secondary: oklch(0.22 0.01 255);
-    --secondary-foreground: oklch(0.88 0.006 80);
-    --muted: oklch(0.22 0.01 255);
-    --muted-foreground: oklch(0.60 0.015 255);
-    --accent: oklch(0.22 0.01 255);
-    --accent-foreground: oklch(0.88 0.006 80);
+    --background: oklch(0.12 0.004 60);
+    --foreground: oklch(0.92 0.003 70);
+    --card: oklch(0.15 0.004 60);
+    --card-foreground: oklch(0.92 0.003 70);
+    --popover: oklch(0.15 0.004 60);
+    --popover-foreground: oklch(0.92 0.003 70);
+    --primary: oklch(0.92 0.003 70);
+    --primary-foreground: oklch(0.12 0.004 60);
+    --secondary: oklch(0.19 0.005 60);
+    --secondary-foreground: oklch(0.85 0.003 70);
+    --muted: oklch(0.19 0.005 60);
+    --muted-foreground: oklch(0.50 0.005 60);
+    --accent: oklch(0.92 0.003 70);
+    --accent-foreground: oklch(0.12 0.004 60);
     --destructive: oklch(0.704 0.191 22.216);
-    --border: oklch(1 0 0 / 9%);
+    --border: oklch(1 0 0 / 10%);
     --input: oklch(1 0 0 / 12%);
-    --ring: oklch(0.55 0.018 255);
+    --ring: oklch(0.92 0.003 70);
+}
+
+@keyframes theme-icon {
+    0% {
+        opacity: 0;
+        transform: rotate(-180deg);
+    }
+    100% {
+        opacity: 1;
+        transform: rotate(0deg);
+    }
 }
 
 @layer base {
@@ -91,32 +103,38 @@
     section {
         @apply scroll-mt-24;
     }
+    ::selection {
+        background: oklch(0.14 0.004 60 / 15%);
+    }
+    .dark ::selection {
+        background: oklch(0.92 0.003 70 / 20%);
+    }
 }
 
 @layer components {
-    /* Display — Bricolage Grotesque, used only for the hero name */
+    /* Display — Instrument Serif, large hero sizes */
     .typo-display-lg {
-        @apply text-foreground font-display text-6xl font-bold tracking-tight lg:text-7xl;
+        @apply text-foreground font-display text-7xl font-normal tracking-wide lg:text-8xl;
     }
     .typo-display-md {
-        @apply text-foreground font-display text-5xl font-bold tracking-tight lg:text-6xl;
+        @apply text-foreground font-display text-6xl font-normal tracking-wide lg:text-7xl;
     }
     .typo-display-sm {
-        @apply text-foreground font-display text-4xl font-extrabold tracking-tight lg:text-5xl;
+        @apply text-foreground font-display text-4xl font-normal tracking-wide lg:text-5xl;
     }
 
-    /* Headline — sans, used in blog headings */
+    /* Headline — Instrument Serif, page-level titles */
     .typo-headline-lg {
-        @apply text-foreground text-4xl font-bold tracking-tight lg:text-5xl;
+        @apply text-foreground font-display text-4xl font-normal tracking-wide lg:text-5xl;
     }
     .typo-headline-md {
-        @apply text-foreground text-3xl font-bold tracking-tight lg:text-4xl;
+        @apply text-foreground font-display text-3xl font-normal tracking-wide lg:text-4xl;
     }
     .typo-headline-sm {
-        @apply text-foreground text-2xl font-semibold tracking-tight lg:text-3xl;
+        @apply text-foreground font-display text-2xl font-normal tracking-wide lg:text-3xl;
     }
 
-    /* Title — used in blog post MDX h2/h3 */
+    /* Title — sans, content-level headings (MDX h2/h3) */
     .typo-title-lg {
         @apply text-foreground text-2xl font-semibold tracking-tight;
     }
@@ -149,10 +167,28 @@
         @apply text-muted-foreground text-xs font-medium;
     }
 
-    /* Section label — replaces old .section-title (was Doto) */
+    /* Section label — quiet sans uppercase */
     .section-title {
-        @apply text-muted-foreground text-xs font-semibold uppercase tracking-widest;
+        @apply text-muted-foreground text-xs font-medium uppercase tracking-widest;
     }
+
+    /* Section entrance animations */
+    .section-animate {
+        opacity: 0;
+        transform: translateY(16px);
+        transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+    }
+    .section-animate.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* Suppress named view-transition groups during theme toggle so the
+   circle clip-path animation covers the entire page uniformly. */
+html[data-theme-transition] * {
+    view-transition-name: none !important;
 }
 
 /* Prose — scoped to article content, uses design tokens so dark mode is automatic */
@@ -173,7 +209,6 @@
     --tw-prose-pre-bg: var(--color-card);
     --tw-prose-th-borders: var(--color-border);
     --tw-prose-td-borders: var(--color-border);
-    /* invert vars unused since design tokens adapt automatically */
     --tw-prose-invert-body: var(--color-muted-foreground);
     --tw-prose-invert-headings: var(--color-foreground);
     --tw-prose-invert-links: var(--color-foreground);
@@ -191,20 +226,19 @@
     --tw-prose-invert-td-borders: var(--color-border);
 }
 
-/* Expressive-code uses `all: revert` internally so prose styles don't bleed in.
-   Just provide spacing so blocks flow naturally in the prose rhythm. */
+/* Expressive-code spacing within prose */
 .prose :where(.expressive-code) {
     margin-block: 1.5rem;
 }
 
-/* Heading anchor links — reset prose link styles so they don't underline */
+/* Heading anchor links — reset prose link styles */
 .prose :where(h1, h2, h3, h4, h5, h6) a {
     color: inherit;
     text-decoration: none;
     font-weight: inherit;
 }
 
-/* GFM task list checkboxes — custom styled, theme-adaptive */
+/* GFM task list checkboxes */
 .prose :where(.contains-task-list) {
     list-style: none;
     padding-left: 0;
@@ -243,21 +277,28 @@
     --ec-frm-copyIcon: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2024%2024'%20fill%3D'none'%20stroke%3D'black'%20stroke-width%3D'2'%20stroke-linecap%3D'round'%20stroke-linejoin%3D'round'%3E%3Crect%20width%3D'14'%20height%3D'14'%20x%3D'8'%20y%3D'8'%20rx%3D'2'%20ry%3D'2'%2F%3E%3Cpath%20d%3D'M4%2016c-1.1%200-2-.9-2-2V4c0-1.1.9-2%202-2h10c1.1%200%202%20.9%202%202'%2F%3E%3C%2Fsvg%3E");
 }
 
-/* Checkbox check icon per theme — input::after doesn't render on replaced elements */
+/* Checkbox check icon per theme */
 :root {
-    --checkbox-check-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23f5f3ee' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E");
+    --checkbox-check-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23faf9f7' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E");
 }
 .dark {
-    --checkbox-check-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231a1c2a' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E");
+    --checkbox-check-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231d1c1a' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E");
 }
 
-/* Override prose's 2em image margins — img/figure are direct .prose children in MDX */
+/* Footnote back-references */
+.prose :where([data-footnote-ref]) {
+    scroll-margin-top: 8rem;
+    display: inline-block;
+}
+
+/* Override prose image margins */
 .prose img,
 .prose figure {
     margin-top: 1rem;
     margin-bottom: 1rem;
 }
 
+/* View transition — disable default animation, let ThemeToggle handle it */
 ::view-transition-old(root),
 ::view-transition-new(root) {
     animation: none;

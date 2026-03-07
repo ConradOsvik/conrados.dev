@@ -1,4 +1,3 @@
-import { LinkIcon } from '@heroicons/react/24/solid'
 import type { MDXComponents } from 'mdx/types'
 import type { ComponentPropsWithoutRef } from 'react'
 import { cn } from '~/lib/utils'
@@ -16,10 +15,13 @@ function createHeading(Tag: HeadingTag, baseClasses: string) {
             <Tag id={id} className={cn(baseClasses, className)} {...props}>
                 <a
                     href={`#${id}`}
-                    className="group inline-flex items-center justify-center gap-2 rounded-sm outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
+                    data-heading-link
+                    className="group inline-flex items-center gap-1.5 rounded-sm outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
                 >
                     {children}
-                    <LinkIcon className="h-4 w-4 opacity-0 transition-opacity group-hover:opacity-100" />
+                    <span className="heading-link-icon shrink-0 opacity-0 transition-opacity group-hover:opacity-100 text-muted-foreground">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                    </span>
                 </a>
             </Tag>
         )
@@ -48,7 +50,7 @@ export const mdxComponents: MDXComponents = {
     a: ({ className, ...props }) => (
         <a
             className={cn(
-                'text-foreground font-medium underline underline-offset-4 decoration-border hover:decoration-foreground transition-colors rounded-sm outline-none focus-visible:ring-2 focus-visible:ring-ring/50',
+                'text-primary font-medium underline underline-offset-4 decoration-primary/30 hover:decoration-primary transition-colors rounded-sm outline-none focus-visible:ring-2 focus-visible:ring-ring/50',
                 className
             )}
             {...props}
@@ -96,7 +98,7 @@ export const mdxComponents: MDXComponents = {
     code: ({ className, children, ...props }) => (
         <code
             className={cn(
-                'bg-muted text-foreground rounded px-1.5 py-0.5 font-mono text-[0.875em] before:content-none after:content-none',
+                'bg-primary/5 text-foreground rounded px-1.5 py-0.5 font-mono text-[0.875em] before:content-none after:content-none',
                 className
             )}
             {...props}

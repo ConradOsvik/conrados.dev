@@ -1,0 +1,65 @@
+---
+import { getCollection } from 'astro:content'
+import Layout from '~/layouts/Layout.astro'
+import { BlogPostList } from '~/components/blog/BlogPostList'
+
+const posts = (await getCollection('blog')).sort(
+    (a, b) => b.data.date.getTime() - a.data.date.getTime()
+)
+
+const postsByYear = new Map<number, typeof posts>()
+for (const post of posts) {
+    const year = post.data.date.getFullYear()
+    if (!postsByYear.has(year)) postsByYear.set(year, [])
+    postsByYear.get(year)!.push(post)
+}
+
+function toItems(yearPosts: typeof posts) {
+    return yearPosts.map((post) => ({
+        title: post.data.title,
+        description: post.data.description,
+        date: post.data.date.toLocaleDateString('en', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric'
+        }),
+        dateISO: post.data.date.toISOString(),
+        href: `/writing/${post.slug}`,
+        slug: post.slug
+    }))
+}
+---
+
+<Layout
+    title="Writing – Conrad Osvik"
+    description="Writing about software, engineering, and things I find interesting."
+>
+    <div class="flex w-full max-w-xl flex-col py-12 gap-8">
+        <div class="flex items-baseline justify-between">
+            <h1 class="typo-headline-md">Writing</h1>
+            <a
+                href="/rss.xml"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                title="RSS Feed"
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/></svg>
+                Subscribe
+            </a>
+        </div>
+
+        {
+            posts.length === 0 ? (
+                <p class="typo-body-md">No posts yet. Check back soon!</p>
+            ) : (
+                [...postsByYear.entries()].map(([year, yearPosts]) => (
+                    <section class="flex flex-col gap-6">
+                        <h2 class="section-title">{year}</h2>
+                        <BlogPostList posts={toItems(yearPosts)} client:load />
+                    </section>
+                ))
+            )
+        }
+    </div>
+</Layout>

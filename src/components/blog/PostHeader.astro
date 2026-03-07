@@ -9,6 +9,7 @@ interface Props {
 
 const { post } = Astro.props
 const { title, description, date, cover, tags } = post.data
+const slug = post.slug
 
 const formattedDate = new Intl.DateTimeFormat('en', {
     year: 'numeric',
@@ -20,7 +21,7 @@ const formattedDate = new Intl.DateTimeFormat('en', {
 <header class="mb-10">
     {
         cover && (
-            <div class="mb-6 overflow-hidden rounded-xl">
+            <div class="mb-6 overflow-hidden rounded-xl" transition:name={`post-cover-${slug}`}>
                 <Image
                     src={cover}
                     alt={`Cover for ${title}`}
@@ -31,13 +32,13 @@ const formattedDate = new Intl.DateTimeFormat('en', {
             </div>
         )
     }
-    <h1 class="typo-headline-md">{title}</h1>
-    {description && <p class="typo-body-md mt-3">{description}</p>}
+    <h1 class="typo-headline-md" transition:name={`post-title-${slug}`}>{title}</h1>
+    {description && <p class="typo-body-md mt-3" transition:name={`post-desc-${slug}`}>{description}</p>}
     <div class="mt-4 flex flex-wrap items-center gap-x-3 gap-y-2 text-xs text-muted-foreground">
-        <time datetime={date.toISOString()}>{formattedDate}</time>
+        <time datetime={date.toISOString()} transition:name={`post-date-${slug}`}>{formattedDate}</time>
         {
             tags?.length && (
-                <span class="flex flex-wrap items-center gap-1.5 ml-1">
+                <span class="flex flex-wrap items-center gap-1.5 ml-1" transition:name={`post-tags-${slug}`}>
                     {tags.map((tag) => (
                         <Badge variant="secondary">{tag}</Badge>
                     ))}

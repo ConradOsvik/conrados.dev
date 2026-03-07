@@ -43,19 +43,21 @@ const filtered = headings.filter((h) => h.depth <= 3)
             .map((id) => document.getElementById(id))
             .filter(Boolean) as HTMLElement[]
 
-        let current = ''
+        let current = headingIds[0] ?? ''
 
         function update() {
             const scrollY = window.scrollY + 120
+            let found = headingIds[0] ?? ''
             for (let i = headingEls.length - 1; i >= 0; i--) {
                 if (headingEls[i].offsetTop <= scrollY) {
-                    current = headingIds[i]
+                    found = headingIds[i]
                     break
                 }
             }
+            current = found
             links.forEach((link) => {
                 const id = decodeURIComponent(link.getAttribute('href')!.slice(1))
-                link.classList.toggle('text-foreground', id === current)
+                link.classList.toggle('text-primary', id === current)
                 link.classList.toggle('text-muted-foreground', id !== current)
             })
         }

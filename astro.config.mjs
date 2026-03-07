@@ -39,39 +39,36 @@ export default defineConfig({
                 borderWidth: '1px',
                 codeFontFamily:
                     "'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace",
-                // Match --card background and --border color
                 codeBackground: ({ theme }) =>
                     theme.type === 'dark'
-                        ? 'oklch(0.175 0.008 255)'
-                        : 'oklch(1 0 0)',
+                        ? 'oklch(0.15 0.004 60)'
+                        : 'oklch(0.985 0.002 75)',
                 borderColor: ({ theme }) =>
                     theme.type === 'dark'
-                        ? 'oklch(1 0 0 / 9%)'
-                        : 'oklch(0.88 0.008 250)',
+                        ? 'oklch(1 0 0 / 10%)'
+                        : 'oklch(0.90 0.004 70)',
                 frames: {
                     frameBoxShadowCssValue: 'none',
-                    // Editor background (matches --card)
                     editorBackground: ({ theme }) =>
                         theme.type === 'dark'
-                            ? 'oklch(0.175 0.008 255)'
-                            : 'oklch(1 0 0)',
-                    // Tab bar background (matches --background / --muted)
+                            ? 'oklch(0.15 0.004 60)'
+                            : 'oklch(0.985 0.002 75)',
                     editorTabBarBackground: ({ theme }) =>
                         theme.type === 'dark'
-                            ? 'oklch(0.135 0.008 255)'
-                            : 'oklch(0.95 0.004 250)',
+                            ? 'oklch(0.12 0.004 60)'
+                            : 'oklch(0.95 0.003 70)',
                     editorActiveTabBackground: ({ theme }) =>
                         theme.type === 'dark'
-                            ? 'oklch(0.175 0.008 255)'
-                            : 'oklch(1 0 0)',
+                            ? 'oklch(0.15 0.004 60)'
+                            : 'oklch(0.985 0.002 75)',
                     editorTabBarBorderColor: ({ theme }) =>
                         theme.type === 'dark'
-                            ? 'oklch(1 0 0 / 9%)'
-                            : 'oklch(0.88 0.008 250)',
+                            ? 'oklch(1 0 0 / 10%)'
+                            : 'oklch(0.90 0.004 70)',
                     editorTabBarBorderBottomColor: ({ theme }) =>
                         theme.type === 'dark'
-                            ? 'oklch(1 0 0 / 9%)'
-                            : 'oklch(0.88 0.008 250)',
+                            ? 'oklch(1 0 0 / 10%)'
+                            : 'oklch(0.90 0.004 70)',
                     editorActiveTabBorderColor: 'transparent'
                 }
             }

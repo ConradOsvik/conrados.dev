@@ -1,0 +1,18 @@
+---
+title: 'Building Photon — a modern backend for TIHLDE'
+description: 'How we rebuilt our student organization backend with Hono, Drizzle, and Postgres.'
+date: '2025-11-02'
+tags: ['backend', 'hono', 'drizzle']
+---
+
+## Why rewrite?
+
+The old Django backend served us well for years, but as our team grew and requirements evolved, we needed something that better fit our workflow.
+
+## The stack
+
+We settled on **Hono** as the HTTP framework, **Drizzle ORM** for type-safe database access, and **Postgres** as the database. Redis handles caching and session management.
+
+## Lessons learned
+
+Migrating a production system used by hundreds of students is no small feat. The key was running both systems in parallel during the transition period.

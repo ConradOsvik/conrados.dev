@@ -11,6 +11,7 @@ type Props = {
 export function ThemeToggle({ className }: Props) {
     const [theme, setTheme] = useState<'light' | 'dark' | null>(null)
     const buttonRef = useRef<HTMLButtonElement | null>(null)
+    const iconRef = useRef<HTMLSpanElement | null>(null)
 
     useEffect(() => {
         const isDark = document.documentElement.classList.contains('dark')
@@ -25,6 +26,13 @@ export function ThemeToggle({ className }: Props) {
 
         const apply = () => {
             flushSync(() => setTheme(nextTheme))
+            const el = iconRef.current
+            if (el) {
+                el.classList.remove('animate-theme-icon')
+                void el.offsetWidth
+                el.classList.add('animate-theme-icon')
+                el.addEventListener('animationend', () => el.classList.remove('animate-theme-icon'), { once: true })
+            }
             document.documentElement.classList.toggle('dark', nextTheme === 'dark')
             localStorage.setItem('theme', nextTheme)
         }
@@ -34,7 +42,14 @@ export function ThemeToggle({ className }: Props) {
             return
         }
 
+        // Suppress named view-transition groups so elements with
+        // transition:name don't animate independently of the root clip-path.
+        document.documentElement.dataset.themeTransition = ''
+
         const transition = startViewTransition(apply)
+        transition.finished.finally(() => {
+            delete document.documentElement.dataset.themeTransition
+        })
         await transition.ready
 
         const { top, left, width, height } =
@@ -65,17 +80,22 @@ export function ThemeToggle({ className }: Props) {
             ref={buttonRef}
             onClick={changeTheme}
             aria-label="Toggle theme"
-            className={cn(className, 'size-10')}
+            className={cn(className, 'size-10 hover:bg-foreground/5 dark:hover:bg-foreground/10')}
             variant="ghost"
             size="icon"
         >
-            {theme === null ? (
-                <span className="inline-block size-6" aria-hidden />
-            ) : theme === 'dark' ? (
-                <SunIcon className="size-6" />
-            ) : (
-                <MoonIcon className="size-6" />
-            )}
+            <span
+                ref={iconRef}
+                className="inline-flex items-center justify-center"
+            >
+                {theme === null ? (
+                    <span className="inline-block size-5" aria-hidden />
+                ) : theme === 'dark' ? (
+                    <SunIcon className="size-5" />
+                ) : (
+                    <MoonIcon className="size-5" />
+                )}
+            </span>
         </Button>
     )
 }
