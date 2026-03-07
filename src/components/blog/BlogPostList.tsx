@@ -1,6 +1,6 @@
 import {
     HoverHighlightRoot,
-    HoverHighlightItem,
+    HoverHighlightItem
 } from '~/components/ui/HoverHighlight'
 
 interface Post {
@@ -14,24 +14,24 @@ interface Post {
 
 export function BlogPostList({ posts }: { posts: Post[] }) {
     return (
-        <HoverHighlightRoot className="flex flex-col -mx-3">
+        <HoverHighlightRoot className="-mx-3 flex flex-col">
             {posts.map((post) => (
                 <HoverHighlightItem key={post.slug}>
                     <a href={post.href} className="block px-3 py-2.5">
                         <div className="flex items-baseline justify-between gap-4">
                             <h2
-                                className="text-sm font-medium text-foreground"
+                                className="text-foreground text-sm font-medium"
                                 style={{
-                                    viewTransitionName: `post-title-${post.slug}`,
+                                    viewTransitionName: `post-title-${post.slug}`
                                 }}
                             >
                                 {post.title}
                             </h2>
                             <time
-                                className="shrink-0 text-xs text-muted-foreground"
+                                className="text-muted-foreground shrink-0 text-xs"
                                 dateTime={post.dateISO}
                                 style={{
-                                    viewTransitionName: `post-date-${post.slug}`,
+                                    viewTransitionName: `post-date-${post.slug}`
                                 }}
                             >
                                 {post.date}
@@ -39,9 +39,9 @@ export function BlogPostList({ posts }: { posts: Post[] }) {
                         </div>
                         {post.description && (
                             <p
-                                className="mt-1 text-sm text-muted-foreground"
+                                className="text-muted-foreground mt-1 text-sm"
                                 style={{
-                                    viewTransitionName: `post-desc-${post.slug}`,
+                                    viewTransitionName: `post-desc-${post.slug}`
                                 }}
                             >
                                 {post.description}

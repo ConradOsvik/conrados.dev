@@ -4,7 +4,7 @@ import {
     useRef,
     useState,
     useCallback,
-    type ReactNode,
+    type ReactNode
 } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
 
@@ -29,7 +29,7 @@ let nextKey = 0
 
 export function HoverHighlightRoot({
     children,
-    className,
+    className
 }: {
     children: ReactNode
     className?: string
@@ -85,43 +85,43 @@ export function HoverHighlightRoot({
                                 left: highlight.left,
                                 top: highlight.top,
                                 width: highlight.width,
-                                height: highlight.height,
+                                height: highlight.height
                             }}
                             animate={{
                                 opacity: 1,
                                 left: highlight.left,
                                 top: highlight.top,
                                 width: highlight.width,
-                                height: highlight.height,
+                                height: highlight.height
                             }}
                             exit={{ opacity: 0 }}
                             transition={{
                                 left: {
                                     type: 'spring',
                                     stiffness: 500,
-                                    damping: 30,
+                                    damping: 30
                                 },
                                 top: {
                                     type: 'spring',
                                     stiffness: 500,
-                                    damping: 30,
+                                    damping: 30
                                 },
                                 width: {
                                     type: 'spring',
                                     stiffness: 500,
-                                    damping: 30,
+                                    damping: 30
                                 },
                                 height: {
                                     type: 'spring',
                                     stiffness: 500,
-                                    damping: 30,
+                                    damping: 30
                                 },
                                 opacity: {
                                     duration: 0.15,
-                                    ease: 'easeOut',
-                                },
+                                    ease: 'easeOut'
+                                }
                             }}
-                            className="pointer-events-none absolute rounded-md bg-foreground/[0.06]"
+                            className="bg-foreground/[0.06] pointer-events-none absolute rounded-md"
                         />
                     )}
                 </AnimatePresence>

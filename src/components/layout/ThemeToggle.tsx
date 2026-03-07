@@ -31,9 +31,16 @@ export function ThemeToggle({ className }: Props) {
                 el.classList.remove('animate-theme-icon')
                 void el.offsetWidth
                 el.classList.add('animate-theme-icon')
-                el.addEventListener('animationend', () => el.classList.remove('animate-theme-icon'), { once: true })
+                el.addEventListener(
+                    'animationend',
+                    () => el.classList.remove('animate-theme-icon'),
+                    { once: true }
+                )
             }
-            document.documentElement.classList.toggle('dark', nextTheme === 'dark')
+            document.documentElement.classList.toggle(
+                'dark',
+                nextTheme === 'dark'
+            )
             localStorage.setItem('theme', nextTheme)
         }
 
@@ -80,7 +87,10 @@ export function ThemeToggle({ className }: Props) {
             ref={buttonRef}
             onClick={changeTheme}
             aria-label="Toggle theme"
-            className={cn(className, 'size-10 hover:bg-foreground/5 dark:hover:bg-foreground/10')}
+            className={cn(
+                className,
+                'hover:bg-foreground/5 dark:hover:bg-foreground/10 size-10'
+            )}
             variant="ghost"
             size="icon"
         >

@@ -6,7 +6,8 @@ export async function GET(context: APIContext) {
     const posts = await getCollection('blog')
     return rss({
         title: 'Conrad Osvik',
-        description: 'Writing about software, engineering, and things I find interesting.',
+        description:
+            'Writing about software, engineering, and things I find interesting.',
         site: context.site!,
         items: posts
             .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())

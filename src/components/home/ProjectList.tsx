@@ -1,6 +1,6 @@
 import {
     HoverHighlightRoot,
-    HoverHighlightItem,
+    HoverHighlightItem
 } from '~/components/ui/HoverHighlight'
 
 interface Project {
@@ -11,15 +11,15 @@ interface Project {
 
 export function ProjectList({ projects }: { projects: Project[] }) {
     return (
-        <HoverHighlightRoot className="flex flex-col -mx-3">
+        <HoverHighlightRoot className="-mx-3 flex flex-col">
             {projects.map((project) => (
                 <HoverHighlightItem key={project.title}>
                     <div className="flex flex-col gap-0.5 px-3 py-2">
                         <div className="flex items-baseline gap-3">
-                            <span className="text-sm font-medium text-foreground">
+                            <span className="text-foreground text-sm font-medium">
                                 {project.title}
                             </span>
-                            <span className="flex gap-2 text-xs text-muted-foreground">
+                            <span className="text-muted-foreground flex gap-2 text-xs">
                                 {project.links.github && (
                                     <a
                                         href={project.links.github}
@@ -42,7 +42,7 @@ export function ProjectList({ projects }: { projects: Project[] }) {
                                 )}
                             </span>
                         </div>
-                        <p className="text-sm text-muted-foreground">
+                        <p className="text-muted-foreground text-sm">
                             {project.description}
                         </p>
                     </div>
