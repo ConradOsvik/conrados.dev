@@ -12,9 +12,11 @@ interface CommandItem {
     id: string
     title: string
     subtitle?: string
-    href: string
     section: string
     keywords: string
+    href?: string
+    external?: boolean
+    action?: () => void
 }
 
 function navigateTo(href: string) {
@@ -66,7 +68,45 @@ export function CommandMenu({ posts }: { posts: Post[] }) {
                 .filter(Boolean)
                 .join(' ')
         }))
-        return [...pages, ...postItems]
+        const links: CommandItem[] = [
+            {
+                id: 'email',
+                title: 'Email',
+                subtitle: 'conrad.tinius.osvik@gmail.com',
+                section: 'Links',
+                keywords: 'email contact mail',
+                href: 'mailto:conrad.tinius.osvik@gmail.com',
+                external: true
+            },
+            {
+                id: 'github',
+                title: 'GitHub',
+                subtitle: 'ConradOsvik',
+                section: 'Links',
+                keywords: 'github code source repository',
+                href: 'https://github.com/ConradOsvik',
+                external: true
+            }
+        ]
+        const settings: CommandItem[] = [
+            {
+                id: 'toggle-theme',
+                title: 'Toggle dark mode',
+                section: 'Settings',
+                keywords: 'theme dark light mode toggle appearance',
+                action: () => {
+                    const isDark =
+                        document.documentElement.classList.contains('dark')
+                    const next = isDark ? 'light' : 'dark'
+                    document.documentElement.classList.toggle(
+                        'dark',
+                        next === 'dark'
+                    )
+                    localStorage.setItem('theme', next)
+                }
+            }
+        ]
+        return [...pages, ...postItems, ...links, ...settings]
     }, [posts])
 
     const filtered = useMemo(() => {
@@ -143,13 +183,18 @@ export function CommandMenu({ posts }: { posts: Post[] }) {
         }
     }, [open])
 
-    const handleSelect = useCallback(
-        (href: string) => {
-            setOpen(false)
-            navigateTo(href)
-        },
-        []
-    )
+    const handleSelect = useCallback((item: CommandItem) => {
+        setOpen(false)
+        if (item.action) {
+            item.action()
+        } else if (item.href) {
+            if (item.external) {
+                window.open(item.href, '_blank', 'noopener,noreferrer')
+            } else {
+                navigateTo(item.href)
+            }
+        }
+    }, [])
 
     const handleKeyDown = useCallback(
         (e: React.KeyboardEvent) => {
@@ -167,7 +212,7 @@ export function CommandMenu({ posts }: { posts: Post[] }) {
                 case 'Enter': {
                     e.preventDefault()
                     const item = filtered[activeIndex]
-                    if (item) handleSelect(item.href)
+                    if (item) handleSelect(item)
                     break
                 }
                 case 'Escape':
@@ -184,17 +229,29 @@ export function CommandMenu({ posts }: { posts: Post[] }) {
         const container = listRef.current
         if (!el || !container) return
 
-        // If first item in section, scroll section label into view
         const sectionHeader = el.previousElementSibling
-        if (sectionHeader?.hasAttribute('data-section-label')) {
-            sectionHeader.scrollIntoView({ block: 'nearest' })
-        } else {
-            el.scrollIntoView({ block: 'nearest' })
-        }
+        const isFirstInSection =
+            sectionHeader?.hasAttribute('data-section-label')
 
-        // If last item, scroll to absolute bottom so padding is visible
+        // The visible range we need: from section label (or item) to item bottom
+        const topOffset = isFirstInSection
+            ? (sectionHeader as HTMLElement).offsetTop
+            : el.offsetTop
+        const bottomOffset = el.offsetTop + el.offsetHeight
+        const visible = container.clientHeight
+
+        // Last item: include bottom padding
         if (activeIndex === filtered.length - 1) {
-            container.scrollTop = container.scrollHeight
+            const needed = container.scrollHeight - visible
+            if (needed > 0) container.scrollTop = needed
+        }
+        // Scroll up: align top of label/item with container top
+        else if (topOffset < container.scrollTop) {
+            container.scrollTop = topOffset
+        }
+        // Scroll down: align item bottom with container bottom
+        else if (bottomOffset > container.scrollTop + visible) {
+            container.scrollTop = bottomOffset - visible
         }
     }, [activeIndex, filtered.length])
 
@@ -315,7 +372,7 @@ export function CommandMenu({ posts }: { posts: Post[] }) {
                                                             )
                                                     }}
                                                     onClick={() =>
-                                                        handleSelect(item.href)
+                                                        handleSelect(item)
                                                     }
                                                     className="relative cursor-pointer rounded-lg px-3 py-2.5"
                                                 >
