@@ -6,12 +6,7 @@ import { NavLinks } from '~/components/layout/NavLinks'
 const pathname = Astro.url.pathname
 ---
 
-<header class="sticky top-0 z-50 w-full" transition:persist transition:animate="none">
-    <!-- Backdrop blur — contained to header area -->
-    <div
-        aria-hidden="true"
-        class="pointer-events-none absolute inset-0 supports-[backdrop-filter]:backdrop-blur-md bg-background/90 supports-[backdrop-filter]:bg-background/60 dark:supports-[backdrop-filter]:bg-background/80"
-    />
+<header class="sticky top-0 z-50 w-full backdrop-blur-sm bg-background/60 dark:bg-background/80">
     <!-- Diffused bottom border -->
     <div
         aria-hidden="true"
