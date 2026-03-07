@@ -3,7 +3,6 @@ import { getCollection } from 'astro:content'
 import Layout from '~/layouts/Layout.astro'
 import { ProjectList } from '~/components/home/ProjectList'
 import { BlogPostList } from '~/components/blog/BlogPostList'
-import { AsciiPortrait } from '~/components/home/AsciiPortrait'
 
 const allPosts = (await getCollection('blog'))
     .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
@@ -48,11 +47,6 @@ const postItems = posts.map((post) => ({
 
 <Layout>
     <div class="relative flex w-full max-w-xl flex-col gap-20 py-12">
-        <!-- ASCII portrait -->
-        <div class="pointer-events-none fixed bottom-0 left-[calc(50%+18rem)] right-0 hidden items-end justify-center xl:flex">
-            <AsciiPortrait src="/profile-nobg.png" client:load />
-        </div>
-
         <!-- Hero -->
         <section class="flex flex-col gap-4">
             <h1 class="typo-headline-lg">Conrad Osvik</h1>
