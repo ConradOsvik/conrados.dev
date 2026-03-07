@@ -56,7 +56,7 @@ export function WritingList({
                         <button
                             key={tag}
                             onClick={() => toggleTag(tag)}
-                            className={`cursor-pointer rounded-full border px-2.5 py-0.5 text-xs transition-colors ${
+                            className={`cursor-pointer rounded-full border px-2.5 py-0.5 text-xs transition-[color,background-color] ${
                                 active
                                     ? 'border-foreground/20 bg-foreground/10 text-foreground'
                                     : 'border-border text-muted-foreground hover:text-foreground hover:border-foreground/20'
