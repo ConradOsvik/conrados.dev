@@ -1,33 +1,28 @@
 ---
 import { getCollection } from 'astro:content'
 import Layout from '~/layouts/Layout.astro'
-import { BlogPostList } from '~/components/blog/BlogPostList'
+import { WritingList } from '~/components/blog/WritingList'
 
 const posts = (await getCollection('blog')).sort(
     (a, b) => b.data.date.getTime() - a.data.date.getTime()
 )
 
-const postsByYear = new Map<number, typeof posts>()
-for (const post of posts) {
-    const year = post.data.date.getFullYear()
-    if (!postsByYear.has(year)) postsByYear.set(year, [])
-    postsByYear.get(year)!.push(post)
-}
+const allTags = [...new Set(posts.flatMap((p) => p.data.tags ?? []))].sort()
 
-function toItems(yearPosts: typeof posts) {
-    return yearPosts.map((post) => ({
-        title: post.data.title,
-        description: post.data.description,
-        date: post.data.date.toLocaleDateString('en', {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric'
-        }),
-        dateISO: post.data.date.toISOString(),
-        href: `/writing/${post.slug}`,
-        slug: post.slug
-    }))
-}
+const items = posts.map((post) => ({
+    title: post.data.title,
+    description: post.data.description,
+    date: post.data.date.toLocaleDateString('en', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+    }),
+    dateISO: post.data.date.toISOString(),
+    href: `/writing/${post.slug}`,
+    slug: post.slug,
+    tags: post.data.tags ?? [],
+    year: post.data.date.getFullYear()
+}))
 ---
 
 <Layout
@@ -53,12 +48,7 @@ function toItems(yearPosts: typeof posts) {
             posts.length === 0 ? (
                 <p class="typo-body-md">No posts yet. Check back soon!</p>
             ) : (
-                [...postsByYear.entries()].map(([year, yearPosts]) => (
-                    <section class="flex flex-col gap-6">
-                        <h2 class="section-title">{year}</h2>
-                        <BlogPostList posts={toItems(yearPosts)} client:load />
-                    </section>
-                ))
+                <WritingList posts={items} allTags={allTags} client:load />
             )
         }
     </div>
