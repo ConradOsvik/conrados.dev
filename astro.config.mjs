@@ -1,6 +1,7 @@
 // @ts-check
 import { defineConfig } from 'astro/config'
 import expressiveCode from 'astro-expressive-code'
+import { pluginLineNumbers } from '@expressive-code/plugin-line-numbers'
 import react from '@astrojs/react'
 import mdx from '@astrojs/mdx'
 import sitemap from '@astrojs/sitemap'
@@ -17,6 +18,9 @@ const site =
           ? `https://${process.env.VERCEL_URL}`
           : 'https://conrados.dev'
 
+/** @param {{ type: string }} theme */
+const isDark = ({ type }) => type === 'dark'
+
 export default defineConfig({
     site,
     markdown: {
@@ -29,47 +33,85 @@ export default defineConfig({
     },
     integrations: [
         expressiveCode({
+            plugins: [pluginLineNumbers()],
             // Light theme first = default at :root; dark theme scoped to .dark
             themes: ['github-light', 'github-dark-dimmed'],
             useDarkModeMediaQuery: false,
             themeCssSelector: (theme) =>
-                theme.type === 'dark' ? '.dark' : ':root',
+                isDark(theme) ? '.dark' : ':root',
+            defaultProps: {
+                showLineNumbers: false
+            },
             styleOverrides: {
                 borderRadius: '0.5rem',
                 borderWidth: '1px',
                 codeFontFamily:
                     "'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace",
+                codeFontSize: '0.8125rem',
                 codeBackground: ({ theme }) =>
-                    theme.type === 'dark'
+                    isDark(theme)
                         ? 'oklch(0.15 0.004 60)'
                         : 'oklch(0.985 0.002 75)',
                 borderColor: ({ theme }) =>
-                    theme.type === 'dark'
-                        ? 'oklch(1 0 0 / 10%)'
-                        : 'oklch(0.90 0.004 70)',
+                    isDark(theme)
+                        ? 'oklch(0.21 0.004 60)'
+                        : 'oklch(0.88 0.004 70)',
                 frames: {
                     frameBoxShadowCssValue: 'none',
                     editorBackground: ({ theme }) =>
-                        theme.type === 'dark'
+                        isDark(theme)
                             ? 'oklch(0.15 0.004 60)'
                             : 'oklch(0.985 0.002 75)',
                     editorTabBarBackground: ({ theme }) =>
-                        theme.type === 'dark'
+                        isDark(theme)
                             ? 'oklch(0.12 0.004 60)'
                             : 'oklch(0.95 0.003 70)',
                     editorActiveTabBackground: ({ theme }) =>
-                        theme.type === 'dark'
+                        isDark(theme)
                             ? 'oklch(0.15 0.004 60)'
                             : 'oklch(0.985 0.002 75)',
                     editorTabBarBorderColor: ({ theme }) =>
-                        theme.type === 'dark'
-                            ? 'oklch(1 0 0 / 10%)'
-                            : 'oklch(0.90 0.004 70)',
+                        isDark(theme)
+                            ? 'oklch(0.21 0.004 60)'
+                            : 'oklch(0.88 0.004 70)',
                     editorTabBarBorderBottomColor: ({ theme }) =>
-                        theme.type === 'dark'
-                            ? 'oklch(1 0 0 / 10%)'
-                            : 'oklch(0.90 0.004 70)',
-                    editorActiveTabBorderColor: 'transparent'
+                        isDark(theme)
+                            ? 'oklch(0.21 0.004 60)'
+                            : 'oklch(0.88 0.004 70)',
+                    editorActiveTabBorderColor: 'transparent',
+                    editorActiveTabIndicatorTopColor: 'transparent',
+                    editorActiveTabIndicatorBottomColor: 'transparent',
+                    inlineButtonForeground: ({ theme }) =>
+                        isDark(theme)
+                            ? 'oklch(0.55 0.003 70)'
+                            : 'oklch(0.45 0.004 60)',
+                    inlineButtonBorderOpacity: '0',
+                    inlineButtonBackgroundIdleOpacity: '0',
+                    inlineButtonBackgroundHoverOrFocusOpacity: '0.08',
+                    tooltipSuccessBackground: ({ theme }) =>
+                        isDark(theme)
+                            ? 'oklch(0.19 0.005 60)'
+                            : 'oklch(0.14 0.004 60)',
+                    tooltipSuccessForeground: ({ theme }) =>
+                        isDark(theme)
+                            ? 'oklch(0.7 0.003 70)'
+                            : 'oklch(0.92 0.003 70)'
+                },
+                textMarkers: {
+                    backgroundOpacity: '25%',
+                    borderOpacity: '50%',
+                    defaultChroma: '30',
+                    lineMarkerAccentWidth: '2px'
+                },
+                lineNumbers: {
+                    foreground: ({ theme }) =>
+                        isDark(theme)
+                            ? 'oklch(0.32 0.004 60)'
+                            : 'oklch(0.68 0.003 70)',
+                    highlightForeground: ({ theme }) =>
+                        isDark(theme)
+                            ? 'oklch(0.45 0.004 60)'
+                            : 'oklch(0.45 0.004 60)'
                 }
             }
         }),
