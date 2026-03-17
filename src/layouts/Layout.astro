@@ -1,0 +1,135 @@
+---
+import { getCollection } from 'astro:content'
+import { ClientRouter } from 'astro:transitions'
+import '~/styles/globals.css'
+import Header from '~/components/layout/Header.astro'
+import Footer from '~/components/layout/Footer.astro'
+import { CommandMenu } from '~/components/CommandMenu'
+
+interface Props {
+    title?: string
+    description?: string
+    ogImage?: string
+    ogImageHeight?: number
+    ogType?: 'website' | 'article'
+}
+
+const {
+    title = 'Conrad Osvik',
+    description = 'Portfolio of Conrad Osvik',
+    ogImage,
+    ogImageHeight,
+    ogType = 'website'
+} = Astro.props
+
+const canonicalUrl = Astro.url.href
+const posthogKey = import.meta.env.PUBLIC_POSTHOG_KEY
+
+const allPosts = (await getCollection('blog')).sort(
+    (a, b) => b.data.date.getTime() - a.data.date.getTime()
+)
+const commandMenuPosts = allPosts.map((p) => ({
+    title: p.data.title,
+    description: p.data.description,
+    slug: p.slug,
+    tags: p.data.tags ?? []
+}))
+---
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content={Astro.generator} />
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <link rel="canonical" href={canonicalUrl} />
+
+        <!-- Primary meta -->
+        <title>{title}</title>
+        <meta name="description" content={description} />
+
+        <!-- Open Graph -->
+        <meta property="og:site_name" content="Conrad Osvik" />
+        <meta property="og:type" content={ogType} />
+        <meta property="og:url" content={canonicalUrl} />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
+        {ogImage && <meta property="og:image" content={ogImage} />}
+        {ogImage && <meta property="og:image:type" content="image/jpeg" />}
+        {ogImage && <meta property="og:image:width" content="1200" />}
+        {ogImage && ogImageHeight && <meta property="og:image:height" content={String(ogImageHeight)} />}
+
+        <!-- Twitter / X -->
+        <meta name="twitter:card" content={ogImage ? 'summary_large_image' : 'summary'} />
+        <meta name="twitter:title" content={title} />
+        <meta name="twitter:description" content={description} />
+        {ogImage && <meta name="twitter:image" content={ogImage} />}
+
+        <!-- RSS -->
+        <link rel="alternate" type="application/rss+xml" title="Conrad Osvik" href="/rss.xml" />
+
+        <!-- Fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+        <link
+            href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Sora:wght@100..800&family=Geist+Mono:wght@100..900&display=swap"
+            rel="stylesheet"
+        />
+
+        <ClientRouter />
+
+        <!-- Theme (runs before paint to avoid flash, and after view-transition swap) -->
+        <script is:inline>
+            function applyTheme() {
+                const stored = localStorage.getItem('theme')
+                const prefersDark = window.matchMedia(
+                    '(prefers-color-scheme: dark)'
+                ).matches
+                const theme = stored ?? (prefersDark ? 'dark' : 'light')
+                document.documentElement.classList.toggle('dark', theme === 'dark')
+            }
+            applyTheme()
+            document.addEventListener('astro:after-swap', applyTheme)
+        </script>
+
+        <!-- Skip same-page navigations (Next.js-like behaviour) -->
+        <script is:inline>
+            document.addEventListener('click', function (e) {
+                var link = e.target.closest('a[href]')
+                if (!link) return
+                var url = new URL(link.href, location.origin)
+                if (url.origin === location.origin && url.pathname === location.pathname && !url.hash) {
+                    e.preventDefault()
+                }
+            })
+        </script>
+
+        <!-- PostHog -->
+        <script is:inline define:vars={{ posthogKey }}>
+            /* oxlint-disable no-unused-expressions, oxc/number-arg-out-of-range */
+            !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="init capture register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onSessionId getSurveys getActiveMatchingSurveys renderSurvey canRenderSurvey identify setPersonProperties".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+            if (posthogKey) {
+                posthog.init(posthogKey, {
+                    api_host: 'https://eu.i.posthog.com',
+                    person_profiles: 'identified_only',
+                    capture_pageleave: true,
+                    capture_performance: true,
+                    capture_scrolldepth: true,
+                    scroll_root_selector: ['main'],
+                });
+            }
+        </script>
+    </head>
+    <body
+        class="flex min-h-screen flex-col items-center justify-start font-sans antialiased"
+        style="--font-sora: 'Sora'; --font-geist-mono: 'Geist Mono'; --font-dm-serif-display: 'DM Serif Display';"
+    >
+        <Header transition:persist />
+        <CommandMenu posts={commandMenuPosts} client:load />
+        <main class="flex w-full flex-1 justify-center px-6">
+            <slot />
+        </main>
+        <Footer />
+    </body>
+</html>

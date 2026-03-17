@@ -1,0 +1,86 @@
+---
+title: 'Migrating my portfolio from Next.js to Astro'
+description: 'Why I switched frameworks and what I learned along the way.'
+date: '2026-03-12'
+tags: ['astro', 'nextjs', 'web']
+---
+
+## Why migrate?
+
+The old version of this site was a Next.js app. It worked fine, but I wanted two things: a redesign and view transitions. When I started looking into view transitions, Astro kept coming up. It has native support through its `ClientRouter`, and it's built for exactly this kind of site - mostly static content with sprinkles of interactivity.
+
+Next.js is great for web apps. But for a portfolio with a blog, it ships a lot of JavaScript you don't need. The entire React runtime loads on every page even if nothing on the page is interactive. Astro flips this - it ships zero JS by default and lets you opt in with islands.
+
+That combination - view transitions, less JavaScript, and a framework actually designed for content sites - was enough to make the switch.
+
+## View transitions
+
+The main feature I wanted. Astro's `ClientRouter` gives you smooth page transitions out of the box. But the real power is view transition names - you can tag elements across pages and the browser will animate between them.
+
+For the blog, this means clicking a post title on the writing index smoothly morphs into the title on the post page. Same for descriptions, dates, tags, and cover images. It feels like a single-page app without being one.
+
+```astro title="WritingList.tsx"
+<h3 style={{ viewTransitionName: `post-title-${slug}` }}>
+  {title}
+</h3>
+```
+
+The theme toggle also uses view transitions. When you switch themes, instead of an instant flash, there's a circular clip-path animation that expands from the toggle button. It uses the View Transition API directly:
+
+```ts title="ThemeToggle.tsx"
+document.startViewTransition(() => {
+    // update the theme
+})
+```
+
+Small touch, but it makes the site feel polished.
+
+## Islands architecture
+
+The site is mostly static Astro components - `.astro` files that render to HTML at build time. But some things need client-side JavaScript:
+
+- **Command menu** (Cmd+K) - search across pages and posts, keyboard navigation
+- **Theme toggle** - dark/light mode with localStorage persistence
+- **Nav links** - active link highlighting with hover animations
+- **Writing list** - tag filtering with URL state
+- **Hover highlights** - spring animations on interactive lists
+
+These are React components hydrated with `client:load`. Everything else - the layout, blog post rendering, RSS feed - is static. The result is a site that feels interactive where it matters and loads fast everywhere else.
+
+## MDX and the content layer
+
+Astro's content collections are genuinely nice. You define a schema for your frontmatter, and you get full type safety when querying posts:
+
+```ts title="config.ts"
+const blog = defineCollection({
+    loader: glob({ pattern: '**/*.mdx', base: './src/content/blog' }),
+    schema: ({ image }) =>
+        z.object({
+            title: z.string(),
+            description: z.string(),
+            date: z.string().date(),
+            cover: image().optional(),
+            tags: z.array(z.string()).optional()
+        })
+})
+```
+
+For MDX rendering, I'm using [Expressive Code](https://expressive-code.com/) for syntax highlighting (with line numbers, diffs, and line markers), remark-gfm for GitHub-flavored markdown, and KaTeX for math. Custom heading components add anchor links you can copy.
+
+The content lives next to the blog posts as `.mdx` files in the content directory, which means images can be co-located with their posts instead of thrown into a global `public/` folder.
+
+## The design system
+
+I took the redesign as a chance to set up a proper design system. Colors use OKLCH - a perceptually uniform color space that makes light and dark themes look consistent without manual tweaking per shade. The typography uses three fonts: Sora for body text, Geist Mono for code, and DM Serif Display for display headings.
+
+UI components follow the shadcn pattern - accessible base components from Base UI and Radix, styled with Tailwind and composed with CVA for variants. Nothing is imported from a package registry. Everything lives in the repo and can be modified directly.
+
+## What I'd do differently
+
+**Start with Astro's content collections from day one.** I initially tried to port the Next.js content loading logic before realizing Astro's built-in system is better in every way.
+
+**Don't over-island.** My first pass had too many React components. Some things that feel like they need JavaScript - like a list that groups posts by year - can just be computed at build time in an `.astro` file.
+
+## Was it worth it?
+
+Yes. The site is faster, the code is simpler, and view transitions make navigation feel seamless. Astro is the right tool for content-heavy sites, and the developer experience of mixing `.astro` files with React islands is surprisingly smooth.

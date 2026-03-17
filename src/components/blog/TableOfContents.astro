@@ -1,0 +1,71 @@
+---
+import type { MarkdownHeading } from 'astro'
+
+interface Props {
+    headings: MarkdownHeading[]
+}
+
+const { headings } = Astro.props
+const filtered = headings.filter((h) => h.depth <= 3)
+---
+
+{
+    filtered.length > 0 && (
+        <nav class="toc">
+            <p class="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-4">
+                On this page
+            </p>
+            <ul class="space-y-2 border-l border-border pl-3">
+                {filtered.map((h) => (
+                    <li class:list={['leading-snug', h.depth === 3 ? 'pl-4' : '']}>
+                        <a
+                            href={`#${h.slug}`}
+                            class="toc-link text-sm text-muted-foreground hover:text-foreground transition-colors block rounded-sm outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
+                        >
+                            {h.text}
+                        </a>
+                    </li>
+                ))}
+            </ul>
+        </nav>
+    )
+}
+
+<script>
+    function initToc() {
+        const links = document.querySelectorAll<HTMLAnchorElement>('.toc-link')
+        if (!links.length) return
+
+        const headingIds = Array.from(links).map((l) =>
+            decodeURIComponent(l.getAttribute('href')!.slice(1))
+        )
+        const headingEls = headingIds
+            .map((id) => document.getElementById(id))
+            .filter(Boolean) as HTMLElement[]
+
+        let current = headingIds[0] ?? ''
+
+        function update() {
+            const scrollY = window.scrollY + 120
+            let found = headingIds[0] ?? ''
+            for (let i = headingEls.length - 1; i >= 0; i--) {
+                if (headingEls[i].offsetTop <= scrollY) {
+                    found = headingIds[i]
+                    break
+                }
+            }
+            current = found
+            links.forEach((link) => {
+                const id = decodeURIComponent(link.getAttribute('href')!.slice(1))
+                link.classList.toggle('text-primary', id === current)
+                link.classList.toggle('text-muted-foreground', id !== current)
+            })
+        }
+
+        window.addEventListener('scroll', update, { passive: true })
+        update()
+    }
+
+    initToc()
+    document.addEventListener('astro:page-load', initToc)
+</script>

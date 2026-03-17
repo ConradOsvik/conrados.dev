@@ -1,0 +1,135 @@
+---
+title: 'Building Photon - migrating TIHLDE from Django to Hono'
+description: 'Why we rewrote our student org backend from Python to TypeScript, and how we pulled it off with three developers in six months.'
+date: '2026-03-15'
+cover: './cover.png'
+tags: ['backend', 'typescript', 'hono', 'drizzle']
+---
+
+## Context
+
+[TIHLDE](https://tihlde.org) is a student organization at NTNU. We have a web platform that handles events, user management, payments, and more - used by hundreds of students. [Index](https://github.com/TIHLDE) is the voluntary developer group that builds and maintains everything, around 20 developers at any given time.
+
+For years, the backend was **Lepton** - a Django REST Framework API backed by MySQL. It worked, and at some point it worked well. But over time, cracks started showing - not in the code itself, but in how well it fit the team building it.
+
+## The problem with Django
+
+The biggest issue wasn't Django. It was Python.
+
+TIHLDE recruits from study programs where Python isn't really taught as a development language - it's used for math courses. Students learn JavaScript and Java. When a new developer joins Index and gets thrown into a Django codebase, they have to learn:
+
+1. Python as a general-purpose language
+2. Django's conventions and project structure
+3. Django REST Framework's serializers, viewsets, and permissions
+4. The codebase itself
+
+That's a lot of friction for someone who might only be on the team for a year or two before graduating. Most of our developers are bachelor students with at most three years of programming experience.
+
+Beyond the onboarding problem, Django has some patterns that aged poorly for us:
+
+- **Too much magic.** Django loves implicit behavior. You pass strings of function names instead of actual function references. You define model fields that auto-generate database columns, serializers, and API endpoints through layers of indirection. It's powerful, but it means you can't cmd-click through the codebase to understand what's happening. LSP navigation breaks constantly.
+
+- **No type safety.** Python's type system is opt-in and largely ignored by Django. In a codebase maintained by rotating groups of students, this scales horribly. You rename a field and nothing tells you what broke until someone hits it in production.
+
+- **Niche ecosystem.** When our frontend is TypeScript and our developers already know JavaScript, maintaining a separate Python backend means context-switching between two languages, two package ecosystems, two sets of tooling. Every new developer has to set up and understand both.
+
+## Why TypeScript
+
+The frontend was already TypeScript. Every developer on the team already knew JavaScript. The choice was obvious - unify on one language.
+
+TypeScript gives us what Python didn't:
+
+- **Real type safety.** Not bolted-on annotations that the runtime ignores, but types that the compiler enforces. When you rename a field, the build breaks before the PR gets merged.
+- **LSP that actually works.** Go-to-definition, find-all-references, rename-symbol - they all work reliably. For a team of students learning the codebase, this is huge.
+- **One language across the stack.** Frontend and backend share the same language, the same tooling, and can even share types directly.
+
+## The stack
+
+We went with **Hono** as the HTTP framework. It's lightweight, fast, runs on any JavaScript runtime, and has first-class TypeScript support. Coming from Django REST Framework's class-based views and serializer magic, Hono's explicit routing felt refreshingly simple.
+
+For the database, we switched from MySQL to **PostgreSQL** and picked **Drizzle ORM** as the query layer. Drizzle was a deliberate choice - it's one of the few ORMs where the TypeScript types are derived directly from the schema definition. Your database schema _is_ your type system.
+
+```ts title="schema.ts"
+export const events = pgTable('events', {
+    id: serial('id').primaryKey(),
+    title: varchar('title', { length: 255 }).notNull(),
+    description: text('description'),
+    startDate: timestamp('start_date').notNull(),
+    endDate: timestamp('end_date').notNull(),
+    location: varchar('location', { length: 255 }),
+    capacity: integer('capacity'),
+    createdAt: timestamp('created_at').defaultNow().notNull()
+})
+```
+
+The rest of the stack:
+
+| Layer          | Tool                    |
+| -------------- | ----------------------- |
+| Runtime        | Bun                     |
+| HTTP framework | Hono                    |
+| ORM            | Drizzle                 |
+| Database       | PostgreSQL              |
+| Validation     | Zod                     |
+| Auth           | Better Auth + Feide     |
+| Job queues     | BullMQ + Redis          |
+| Email          | React Email             |
+| Monorepo       | Turborepo               |
+| Testing        | Vitest + Testcontainers |
+| Linting        | Biome                   |
+
+## Going all-in on type safety
+
+The biggest theme of Photon is type safety - not as a nice-to-have, but as the core design principle. Every layer of the stack was chosen to keep types flowing from the database to the API response without manual type definitions.
+
+The chain looks like this:
+
+1. **Drizzle schema** defines the database tables and generates TypeScript types
+2. **Zod schemas** validate request bodies and infer input types
+3. **Hono routes** combine both, with full type inference on request and response
+4. The frontend can consume the OpenAPI spec (auto-generated via Scalar) and get typed clients for free
+
+When someone changes a column in the schema, the type error propagates through the entire stack at compile time. No runtime surprises, no "it worked in dev but broke in prod."
+
+Even the job queues are typed. BullMQ workers receive typed payloads, so you can't accidentally push the wrong shape of data onto a queue.
+
+## Monorepo structure
+
+We organized Photon as a Turborepo monorepo with separate packages:
+
+```
+apps/
+  api/          - the Hono API server
+packages/
+  auth/         - Better Auth + Feide integration
+  core/         - shared config and utilities
+  db/           - Drizzle schema and migrations
+  email/        - React Email templates
+```
+
+This was important for a few reasons. The database schema is shared across packages - the API server imports it, but so do seed scripts and migration tools. Auth is isolated so it can be tested independently. Email templates are React components that can be previewed in a browser during development.
+
+For a team of students, the monorepo structure also makes the codebase easier to navigate. Instead of one giant `app/` directory with Django's flat module structure, each concern lives in its own package with clear boundaries.
+
+## The migration strategy
+
+We didn't do a gradual migration. Photon is a full rewrite, and the plan is to hotswap it in when we're ready.
+
+The approach:
+
+1. Port every endpoint from Lepton to Photon, matching the existing API contract
+2. Write integration tests using Testcontainers (spinning up real Postgres instances)
+3. When Photon is feature-complete, dump the production database and import it into Postgres
+4. Switch the frontend to point at the new backend
+
+Three of us have been working on this for about six months. The backend port is essentially done - what's left is migrating the frontend to use the new API.
+
+The hardest part wasn't the code. It was understanding what the old code _actually did_. Django's implicit behavior means there are side effects hidden in signals, middleware, and serializer hooks that aren't obvious from reading the views. We spent a lot of time just figuring out the existing behavior before reimplementing it.
+
+## Was it worth it?
+
+We haven't shipped Photon to production yet, so the real answer is "ask me in a year." But from a developer experience standpoint, the difference is already obvious.
+
+New developers can navigate the codebase. Types catch mistakes before code review does. The tooling works. When someone asks "what does this endpoint return?", you can cmd-click through the code and get a complete answer.
+
+For a student org where developers rotate every few years and onboarding speed is everything, that matters more than any framework benchmark.

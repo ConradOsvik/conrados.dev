@@ -1,0 +1,84 @@
+---
+import { getImage } from 'astro:assets'
+import { getCollection } from 'astro:content'
+import Layout from '~/layouts/Layout.astro'
+import PostHeader from '~/components/blog/PostHeader.astro'
+import TableOfContents from '~/components/blog/TableOfContents.astro'
+import { mdxComponents } from '~/components/mdx/index'
+
+export async function getStaticPaths() {
+    const posts = await getCollection('blog')
+    return posts.map((post) => ({
+        params: { slug: post.slug },
+        props: { post }
+    }))
+}
+
+const { post } = Astro.props
+const { Content, headings } = await post.render()
+
+const body = post.body ?? ''
+const words = body.trim().split(/\s+/).length
+const readingTime = Math.max(1, Math.round(words / 230))
+
+// Generate a 1200px-wide JPEG for the og:image tag.
+// getImage() runs at build time — the result.src is the hashed output path.
+// Combining with Astro.site gives a fully-qualified URL that crawlers expect.
+const ogImageData = post.data.cover
+    ? await getImage({ src: post.data.cover, width: 1200, format: 'jpeg' })
+    : null
+const ogImageUrl = ogImageData ? new URL(ogImageData.src, Astro.site).href : undefined
+const ogImageHeight = ogImageData?.attributes.height as number | undefined
+---
+
+<Layout
+    title={`${post.data.title} – Conrad Osvik`}
+    description={post.data.description}
+    ogImage={ogImageUrl}
+    ogImageHeight={ogImageHeight}
+    ogType="article"
+>
+    <div class="w-full max-w-xl py-8">
+        <article class="relative">
+            <PostHeader post={post} readingTime={readingTime} />
+            <div class="prose max-w-none" transition:animate="fade">
+                <Content components={mdxComponents} />
+            </div>
+            <!-- TOC floats to the right without affecting content centering.
+                 bottom-0 stretches aside to full article height so sticky works. -->
+            <aside class="hidden 2xl:block absolute left-full top-0 bottom-0 ml-12 w-52">
+                <div class="sticky top-24">
+                    <TableOfContents headings={headings} />
+                </div>
+            </aside>
+        </article>
+    </div>
+</Layout>
+
+<script>
+    function initHeadingLinks() {
+        const links = document.querySelectorAll<HTMLAnchorElement>('a[data-heading-link]')
+        links.forEach((link) => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault()
+                const hash = link.getAttribute('href') ?? ''
+                const url = `${window.location.origin}${window.location.pathname}${hash}`
+                navigator.clipboard.writeText(url)
+                window.history.replaceState(null, '', hash)
+
+                const icon = link.querySelector('.heading-link-icon')
+                if (!icon) return
+                icon.classList.add('opacity-100', 'text-foreground')
+                icon.classList.remove('opacity-0')
+                icon.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>'
+                setTimeout(() => {
+                    icon.classList.remove('opacity-100', 'text-foreground')
+                    icon.classList.add('opacity-0')
+                    icon.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>'
+                }, 2000)
+            })
+        })
+    }
+    initHeadingLinks()
+    document.addEventListener('astro:page-load', initHeadingLinks)
+</script>

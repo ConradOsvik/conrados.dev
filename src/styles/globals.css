@@ -1,27 +1,17 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
+@import 'katex/dist/katex.min.css';
+@plugin "@tailwindcss/typography";
 
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+    --animate-theme-icon: theme-icon 0.5s ease-out;
     --color-background: var(--background);
     --color-foreground: var(--foreground);
-    --font-sans: var(--font-geist-sans);
-    --font-mono: var(--font-geist-mono);
-    --font-doto: var(--font-doto);
-    --color-sidebar-ring: var(--sidebar-ring);
-    --color-sidebar-border: var(--sidebar-border);
-    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-    --color-sidebar-accent: var(--sidebar-accent);
-    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-    --color-sidebar-primary: var(--sidebar-primary);
-    --color-sidebar-foreground: var(--sidebar-foreground);
-    --color-sidebar: var(--sidebar);
-    --color-chart-5: var(--chart-5);
-    --color-chart-4: var(--chart-4);
-    --color-chart-3: var(--chart-3);
-    --color-chart-2: var(--chart-2);
-    --color-chart-1: var(--chart-1);
+    --font-sans: var(--font-sora), ui-sans-serif, system-ui, sans-serif;
+    --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+    --font-display: var(--font-dm-serif-display), 'Georgia', serif;
     --color-ring: var(--ring);
     --color-input: var(--input);
     --color-border: var(--border);
@@ -44,78 +34,65 @@
     --radius-xl: calc(var(--radius) + 4px);
 }
 
+/* Light mode — warm neutrals, no accent (primary = foreground) */
 :root {
     --radius: 0.625rem;
-    --background: oklch(1 0 0);
-    --foreground: oklch(0.145 0 0);
-    --card: oklch(1 0 0);
-    --card-foreground: oklch(0.145 0 0);
-    --popover: oklch(1 0 0);
-    --popover-foreground: oklch(0.145 0 0);
-    --primary: oklch(0.205 0 0);
-    --primary-foreground: oklch(0.985 0 0);
-    --secondary: oklch(0.97 0 0);
-    --secondary-foreground: oklch(0.205 0 0);
-    --muted: oklch(0.97 0 0);
-    --muted-foreground: oklch(0.556 0 0);
-    --accent: oklch(0.97 0 0);
-    --accent-foreground: oklch(0.205 0 0);
+    --background: oklch(0.985 0.002 75);
+    --foreground: oklch(0.14 0.004 60);
+    --card: oklch(0.985 0.002 75);
+    --card-foreground: oklch(0.14 0.004 60);
+    --popover: oklch(0.985 0.002 75);
+    --popover-foreground: oklch(0.14 0.004 60);
+    --primary: oklch(0.14 0.004 60);
+    --primary-foreground: oklch(0.985 0.002 75);
+    --secondary: oklch(0.95 0.003 70);
+    --secondary-foreground: oklch(0.25 0.004 60);
+    --muted: oklch(0.95 0.003 70);
+    --muted-foreground: oklch(0.45 0.005 60);
+    --accent: oklch(0.14 0.004 60);
+    --accent-foreground: oklch(0.985 0.002 75);
     --destructive: oklch(0.577 0.245 27.325);
-    --border: oklch(0.922 0 0);
-    --input: oklch(0.922 0 0);
-    --ring: oklch(0.708 0 0);
-    --chart-1: oklch(0.646 0.222 41.116);
-    --chart-2: oklch(0.6 0.118 184.704);
-    --chart-3: oklch(0.398 0.07 227.392);
-    --chart-4: oklch(0.828 0.189 84.429);
-    --chart-5: oklch(0.769 0.188 70.08);
-    --sidebar: oklch(0.985 0 0);
-    --sidebar-foreground: oklch(0.145 0 0);
-    --sidebar-primary: oklch(0.205 0 0);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.97 0 0);
-    --sidebar-accent-foreground: oklch(0.205 0 0);
-    --sidebar-border: oklch(0.922 0 0);
-    --sidebar-ring: oklch(0.708 0 0);
+    --border: oklch(0.9 0.004 70);
+    --input: oklch(0.9 0.004 70);
+    --ring: oklch(0.14 0.004 60);
 }
 
+/* Dark mode — warm deep dark */
 .dark {
-    --background: oklch(0.145 0 0);
-    --foreground: oklch(0.985 0 0);
-    --card: oklch(0.145 0 0);
-    --card-foreground: oklch(0.985 0 0);
-    --popover: oklch(0.145 0 0);
-    --popover-foreground: oklch(0.985 0 0);
-    --primary: oklch(0.922 0 0);
-    --primary-foreground: oklch(0.205 0 0);
-    --secondary: oklch(0.269 0 0);
-    --secondary-foreground: oklch(0.985 0 0);
-    --muted: oklch(0.269 0 0);
-    --muted-foreground: oklch(0.708 0 0);
-    --accent: oklch(0.269 0 0);
-    --accent-foreground: oklch(0.985 0 0);
+    --background: oklch(0.12 0.004 60);
+    --foreground: oklch(0.92 0.003 70);
+    --card: oklch(0.15 0.004 60);
+    --card-foreground: oklch(0.92 0.003 70);
+    --popover: oklch(0.15 0.004 60);
+    --popover-foreground: oklch(0.92 0.003 70);
+    --primary: oklch(0.92 0.003 70);
+    --primary-foreground: oklch(0.12 0.004 60);
+    --secondary: oklch(0.19 0.005 60);
+    --secondary-foreground: oklch(0.85 0.003 70);
+    --muted: oklch(0.19 0.005 60);
+    --muted-foreground: oklch(0.5 0.005 60);
+    --accent: oklch(0.92 0.003 70);
+    --accent-foreground: oklch(0.12 0.004 60);
     --destructive: oklch(0.704 0.191 22.216);
     --border: oklch(1 0 0 / 10%);
-    --input: oklch(1 0 0 / 15%);
-    --ring: oklch(0.556 0 0);
-    --chart-1: oklch(0.488 0.243 264.376);
-    --chart-2: oklch(0.696 0.17 162.48);
-    --chart-3: oklch(0.769 0.188 70.08);
-    --chart-4: oklch(0.627 0.265 303.9);
-    --chart-5: oklch(0.645 0.246 16.439);
-    --sidebar: oklch(0.205 0 0);
-    --sidebar-foreground: oklch(0.985 0 0);
-    --sidebar-primary: oklch(0.488 0.243 264.376);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.269 0 0);
-    --sidebar-accent-foreground: oklch(0.985 0 0);
-    --sidebar-border: oklch(1 0 0 / 10%);
-    --sidebar-ring: oklch(0.556 0 0);
+    --input: oklch(1 0 0 / 12%);
+    --ring: oklch(0.92 0.003 70);
+}
+
+@keyframes theme-icon {
+    0% {
+        opacity: 0;
+        transform: rotate(-180deg);
+    }
+    100% {
+        opacity: 1;
+        transform: rotate(0deg);
+    }
 }
 
 @layer base {
     * {
-        @apply border-border outline-ring/50;
+        @apply border-border;
     }
     body {
         @apply bg-background text-foreground;
@@ -126,51 +103,59 @@
     section {
         @apply scroll-mt-24;
     }
+    ::selection {
+        background: oklch(0.14 0.004 60 / 15%);
+    }
+    .dark ::selection {
+        background: oklch(0.92 0.003 70 / 20%);
+    }
+}
+
+/* Global focus ring — box-shadow avoids the flash from transition-colors
+   animating outline-color. Base layer so utility ring-* classes override. */
+@layer base {
+    :focus-visible {
+        outline: none;
+        border-radius: var(--radius-sm);
+        box-shadow: 0 0 0 2px color-mix(in oklch, var(--ring) 50%, transparent);
+    }
 }
 
 @layer components {
-    /*
-     * Unified typography scale
-     * Usage examples:
-     *  - <h1 class="typo-display-lg">...</h1>
-     *  - <h2 class="typo-headline-md">...</h2>
-     *  - <p class="typo-body-md">...</p>
-     *  - <span class="typo-label-sm">...</span>
-     */
-    /* Display (hero-level titles) */
+    /* Display — Instrument Serif, large hero sizes */
     .typo-display-lg {
-        @apply text-foreground font-doto text-6xl font-bold tracking-tight lg:text-7xl;
+        @apply text-foreground font-display text-7xl font-normal tracking-wide lg:text-8xl;
     }
     .typo-display-md {
-        @apply text-foreground font-doto text-5xl font-bold tracking-tight lg:text-6xl;
+        @apply text-foreground font-display text-6xl font-normal tracking-wide lg:text-7xl;
     }
     .typo-display-sm {
-        @apply text-foreground font-doto text-4xl font-bold tracking-tight lg:text-5xl;
+        @apply text-foreground font-display text-4xl font-normal tracking-wide lg:text-5xl;
     }
 
-    /* Headline (page/section headings) */
+    /* Headline — Instrument Serif, page-level titles */
     .typo-headline-lg {
-        @apply text-foreground font-doto text-4xl font-semibold tracking-tight lg:text-5xl;
+        @apply text-foreground font-display text-4xl font-normal tracking-wide lg:text-5xl;
     }
     .typo-headline-md {
-        @apply text-foreground font-doto text-3xl font-semibold tracking-tight lg:text-4xl;
+        @apply text-foreground font-display text-3xl font-normal tracking-wide lg:text-4xl;
     }
     .typo-headline-sm {
-        @apply text-foreground font-doto text-2xl font-semibold tracking-tight lg:text-3xl;
+        @apply text-foreground font-display text-2xl font-normal tracking-wide lg:text-3xl;
     }
 
-    /* Title (smaller headings used across UI) */
+    /* Title — sans, content-level headings (MDX h2/h3) */
     .typo-title-lg {
-        @apply text-foreground font-doto text-2xl font-semibold tracking-tight;
+        @apply text-foreground text-2xl font-semibold tracking-tight;
     }
     .typo-title-md {
-        @apply text-foreground font-doto text-xl font-semibold tracking-tight;
+        @apply text-foreground text-xl font-semibold tracking-tight;
     }
     .typo-title-sm {
-        @apply text-foreground font-doto text-lg font-semibold tracking-tight;
+        @apply text-foreground text-lg font-semibold tracking-tight;
     }
 
-    /* Body (paragraph text) */
+    /* Body */
     .typo-body-lg {
         @apply text-muted-foreground text-lg leading-8;
     }
@@ -181,7 +166,7 @@
         @apply text-muted-foreground text-sm leading-6;
     }
 
-    /* Label (meta, captions, helper) */
+    /* Label */
     .typo-label-lg {
         @apply text-muted-foreground text-base font-medium;
     }
@@ -192,18 +177,176 @@
         @apply text-muted-foreground text-xs font-medium;
     }
 
-    /* Backwards-compatible aliases (must @apply utilities, not custom classes) */
-    .title {
-        @apply text-foreground font-doto text-5xl font-bold tracking-tight lg:text-6xl;
-    }
+    /* Section label — quiet sans uppercase */
     .section-title {
-        @apply text-foreground font-doto text-2xl leading-none font-semibold tracking-tight;
+        @apply text-muted-foreground text-xs font-medium tracking-widest uppercase;
     }
-    .chip {
-        @apply inline-flex items-center rounded-md border px-2 py-1 text-xs font-medium text-gray-600 transition-colors hover:bg-neutral-50 dark:text-gray-300 dark:hover:bg-neutral-900;
+
+    /* Section entrance animations */
+    .section-animate {
+        opacity: 0;
+        transform: translateY(16px);
+        transition:
+            opacity 0.5s ease-out,
+            transform 0.5s ease-out;
+    }
+    .section-animate.visible {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
 
+/* Suppress named view-transition groups during theme toggle so the
+   circle clip-path animation covers the entire page uniformly. */
+html[data-theme-transition] * {
+    view-transition-name: none !important;
+}
+
+/* Prose — scoped to article content, uses design tokens so dark mode is automatic */
+.prose {
+    --tw-prose-body: var(--color-muted-foreground);
+    --tw-prose-headings: var(--color-foreground);
+    --tw-prose-lead: var(--color-muted-foreground);
+    --tw-prose-links: var(--color-foreground);
+    --tw-prose-bold: var(--color-foreground);
+    --tw-prose-counters: var(--color-muted-foreground);
+    --tw-prose-bullets: var(--color-border);
+    --tw-prose-hr: var(--color-border);
+    --tw-prose-quotes: var(--color-foreground);
+    --tw-prose-quote-borders: var(--color-border);
+    --tw-prose-captions: var(--color-muted-foreground);
+    --tw-prose-code: var(--color-foreground);
+    --tw-prose-pre-code: var(--color-foreground);
+    --tw-prose-pre-bg: var(--color-card);
+    --tw-prose-th-borders: var(--color-border);
+    --tw-prose-td-borders: var(--color-border);
+    --tw-prose-invert-body: var(--color-muted-foreground);
+    --tw-prose-invert-headings: var(--color-foreground);
+    --tw-prose-invert-links: var(--color-foreground);
+    --tw-prose-invert-bold: var(--color-foreground);
+    --tw-prose-invert-counters: var(--color-muted-foreground);
+    --tw-prose-invert-bullets: var(--color-border);
+    --tw-prose-invert-hr: var(--color-border);
+    --tw-prose-invert-quotes: var(--color-foreground);
+    --tw-prose-invert-quote-borders: var(--color-border);
+    --tw-prose-invert-captions: var(--color-muted-foreground);
+    --tw-prose-invert-code: var(--color-foreground);
+    --tw-prose-invert-pre-code: var(--color-foreground);
+    --tw-prose-invert-pre-bg: var(--color-card);
+    --tw-prose-invert-th-borders: var(--color-border);
+    --tw-prose-invert-td-borders: var(--color-border);
+}
+
+/* Expressive-code spacing within prose */
+.prose :where(.expressive-code) {
+    margin-block: 1.5rem;
+}
+
+/* Reset inline code styles that leak into code blocks via MDX overrides */
+.expressive-code code {
+    background: transparent;
+    padding: 0;
+    border-radius: 0;
+    font-size: inherit;
+}
+.expressive-code code::before,
+.expressive-code code::after {
+    content: none;
+}
+
+/* Heading anchor links — reset prose link styles */
+.prose :where(h1, h2, h3, h4, h5, h6) a {
+    color: inherit;
+    text-decoration: none;
+    font-weight: inherit;
+}
+
+/* GFM task list checkboxes */
+.prose :where(.contains-task-list) {
+    list-style: none;
+    padding-left: 0;
+}
+.prose :where(.task-list-item) {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding-left: 0;
+}
+.prose :where(.task-list-item input[type='checkbox']) {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 1rem;
+    height: 1rem;
+    min-width: 1rem;
+    flex-shrink: 0;
+    border: 1.5px solid var(--color-border);
+    border-radius: 0.25rem;
+    background: transparent;
+    margin-top: 0.2rem;
+    position: relative;
+    cursor: default;
+}
+.prose :where(.task-list-item input[type='checkbox']:checked) {
+    background-color: var(--color-foreground);
+    border-color: var(--color-foreground);
+    background-image: var(--checkbox-check-icon);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 85%;
+}
+
+/* Expressive-code copy button */
+.expressive-code {
+    --ec-frm-copyIcon: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2024%2024'%20fill%3D'none'%20stroke%3D'black'%20stroke-width%3D'2'%20stroke-linecap%3D'round'%20stroke-linejoin%3D'round'%3E%3Crect%20width%3D'14'%20height%3D'14'%20x%3D'8'%20y%3D'8'%20rx%3D'2'%20ry%3D'2'%2F%3E%3Cpath%20d%3D'M4%2016c-1.1%200-2-.9-2-2V4c0-1.1.9-2%202-2h10c1.1%200%202%20.9%202%202'%2F%3E%3C%2Fsvg%3E");
+}
+
+/* Copy button: subtle, appears on hover */
+.expressive-code .copy {
+    opacity: 0;
+    transition: opacity 0.15s ease;
+}
+.expressive-code:hover .copy {
+    opacity: 1;
+}
+.expressive-code .copy button {
+    border-radius: var(--radius-sm) !important;
+}
+
+/* Tooltip: small pill, matching site tokens */
+.expressive-code .copy .feedback {
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    border-radius: var(--radius-sm);
+    padding: 0.2rem 0.5rem;
+}
+
+/* Remove built-in gutter border on normal lines, keep marker indicator */
+.expressive-code .ec-line:not(.mark):not(.ins):not(.del) .code {
+    border-inline-start-color: transparent !important;
+}
+
+/* Checkbox check icon per theme */
+:root {
+    --checkbox-check-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23faf9f7' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E");
+}
+.dark {
+    --checkbox-check-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231d1c1a' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E");
+}
+
+/* Footnote back-references */
+.prose :where([data-footnote-ref]) {
+    scroll-margin-top: 8rem;
+    display: inline-block;
+}
+
+/* Override prose image margins */
+.prose img,
+.prose figure {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+/* View transition — disable default animation, let ThemeToggle handle it */
 ::view-transition-old(root),
 ::view-transition-new(root) {
     animation: none;
