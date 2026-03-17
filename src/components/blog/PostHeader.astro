@@ -5,9 +5,10 @@ import type { CollectionEntry } from 'astro:content'
 
 interface Props {
     post: CollectionEntry<'blog'>
+    readingTime: number
 }
 
-const { post } = Astro.props
+const { post, readingTime } = Astro.props
 const { title, description, date, cover, tags } = post.data
 const slug = post.slug
 
@@ -19,6 +20,13 @@ const formattedDate = new Intl.DateTimeFormat('en', {
 ---
 
 <header class="mb-10">
+    <a
+        href="/writing"
+        class="inline-flex items-center gap-1.5 mb-6 text-sm text-muted-foreground hover:text-foreground transition-colors"
+    >
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+        Back to writing
+    </a>
     {
         cover && (
             <div class="mb-6 overflow-hidden rounded-xl" transition:name={`post-cover-${slug}`}>
@@ -36,6 +44,8 @@ const formattedDate = new Intl.DateTimeFormat('en', {
     {description && <p class="typo-body-md mt-3" transition:name={`post-desc-${slug}`}>{description}</p>}
     <div class="mt-4 flex flex-wrap items-center gap-x-3 gap-y-2 text-xs text-muted-foreground">
         <time datetime={date.toISOString()} transition:name={`post-date-${slug}`}>{formattedDate}</time>
+        <span aria-hidden="true">&middot;</span>
+        <span>{readingTime} min read</span>
         {
             tags?.length && (
                 <span class="flex flex-wrap items-center gap-1.5 ml-1" transition:name={`post-tags-${slug}`}>
